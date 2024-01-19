@@ -1,3 +1,4 @@
+# ip groups
 resource "azurerm_ip_group" "ipgroup" {
   for_each            = local.ip_groups
   name                = "test-ipgroup-${each.key}"
@@ -5,6 +6,7 @@ resource "azurerm_ip_group" "ipgroup" {
   resource_group_name = "rg-vwan-shared-001"
 }
 
+# ip group cidrs
 resource "azurerm_ip_group_cidr" "ipcidr" {
   for_each = toset(flatten([
     for group, cidrs in local.ip_groups : [
@@ -21,6 +23,7 @@ data "azurerm_firewall_policy" "fwp" {
   resource_group_name = "rg-vwan-shared-001"
 }
 
+# collection groups
 resource "azurerm_firewall_policy_rule_collection_group" "default2" {
   for_each           = local.firewall_rule_collection_groups_list
   name               = format("fwrcg-%s", each.key)
@@ -79,7 +82,15 @@ resource "azurerm_firewall_policy_rule_collection_group" "default2" {
           destination_fqdn_tags = try(rule.value.destination_fqdn_tags, null)
           terminate_tls         = try(rule.value.terminate_tls, null)
           web_categories        = try(rule.value.web_categories, null)
-          #http_headers          = try(rule.value.http_headers, null)
+
+          dynamic "http_header" {
+            for_each = try(rule.value.http_headers, null)
+
+            content {
+              name  = http_header.value.name
+              value = http_header.value.value
+            }
+          }
 
           dynamic "protocols" {
             for_each = rule.value.protocols

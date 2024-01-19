@@ -7,7 +7,7 @@ locals {
 
 locals {
   firewall_rule_collection_groups_list = {
-    test = {
+    default = {
       priority = 50000
       network_rule_collections = [
         {
