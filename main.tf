@@ -1,134 +1,101 @@
-# ip groups
-resource "azurerm_ip_group" "ipgroup" {
-  for_each            = local.ip_groups
-  name                = "test-ipgroup-${each.key}"
-  location            = "westeurope"
-  resource_group_name = "rg-vwan-shared-001"
+# virtual wan
+resource "azurerm_virtual_wan" "vwan" {
+  name                           = try(var.vwan.name, var.naming.virtual_wan)
+  location                       = var.location
+  resource_group_name            = var.resourcegroup
+  allow_branch_to_branch_traffic = try(var.vwan.allow_branch_to_branch_traffic, true)
+  disable_vpn_encryption         = try(var.vwan.disable_vpn_encryption, false)
+  type                           = try(var.vwan.type, "Standard")
+  tags                           = try(var.vwan.tags, {})
+
+  office365_local_breakout_category = try(var.vwan.office365_local_breakout_category, "None")
 }
 
-# ip group cidrs
-resource "azurerm_ip_group_cidr" "ipcidr" {
-  for_each = toset(flatten([
-    for group, cidrs in local.ip_groups : [
-      for cidr in cidrs : "${group}-${cidr}"
-    ]
-  ]))
+# vhubs
+resource "azurerm_virtual_hub" "vhub" {
+  for_each = local.vhubs
 
-  ip_group_id = azurerm_ip_group.ipgroup[split("-", each.value)[0]].id
-  cidr        = split("-", each.value)[1]
+  name                   = each.value.name
+  location               = each.value.location
+  resource_group_name    = each.value.resourcegroup
+  address_prefix         = each.value.address_prefix
+  virtual_wan_id         = azurerm_virtual_wan.vwan.id
+  sku                    = each.value.sku
+  hub_routing_preference = each.value.hub_routing_preference
+  tags                   = each.value.tags
 }
 
-data "azurerm_firewall_policy" "fwp" {
-  name                = "arcadis-fw-hub-westeurope-policy"
-  resource_group_name = "rg-vwan-shared-001"
+# firewalls
+resource "azurerm_firewall" "fw" {
+  for_each = {
+    for fw_key, fw in local.firewalls : fw_key => fw
+  }
+
+  name                = each.value.name
+  location            = each.value.location
+  resource_group_name = each.value.resourcegroup
+  sku_tier            = each.value.tier
+  sku_name            = each.value.sku
+  tags                = each.value.tags
+  firewall_policy_id = each.value.associate_policy ? azurerm_firewall_policy.fwp[each.key].id : null
+
+  virtual_hub {
+    virtual_hub_id  = azurerm_virtual_hub.vhub[each.key].id
+    public_ip_count = each.value.public_ip_count
+  }
 }
 
-# collection groups
-resource "azurerm_firewall_policy_rule_collection_group" "default2" {
-  for_each           = local.firewall_rule_collection_groups_list
-  name               = format("fwrcg-%s", each.key)
-  firewall_policy_id = data.azurerm_firewall_policy.fwp.id
-  priority           = each.value.priority
+# firewall Policies
+resource "azurerm_firewall_policy" "fwp" {
+  for_each = {
+    for fwp_key, fwp in local.firewall_policies : fwp_key => fwp
+  }
 
-  dynamic "network_rule_collection" {
-    for_each = toset(
-      each.value.network_rule_collections
-    )
+  name                              = each.value.name
+  location                          = each.value.location
+  resource_group_name               = each.value.resourcegroup
+  tags                              = each.value.tags
+  base_policy_id                    = each.value.base_policy_id
+  private_ip_ranges                 = each.value.private_ip_ranges
+  sku                               = each.value.sku
+  sql_redirect_allowed              = each.value.sql_redirect_allowed
+  threat_intelligence_mode          = each.value.threat_intelligence_mode
+  auto_learn_private_ranges_enabled = each.value.auto_learn_private_ranges_enabled
 
+  dynamic "dns" {
+    for_each = each.value.dns != null ? [each.value.dns] : []
     content {
-      name     = format("nrc-%s", network_rule_collection.value.key)
-      priority = network_rule_collection.value.priority
-      action   = network_rule_collection.value.action
-
-      dynamic "rule" {
-        for_each = network_rule_collection.value.rules
-
-        content {
-          name                  = rule.key
-          description           = try(rule.value.description, null)
-          protocols             = rule.value.protocols
-          destination_ports     = rule.value.destination_ports
-          destination_addresses = try(rule.value.destination_addresses, null)
-          destination_ip_groups = try(rule.value.destination_ip_groups, null)
-          destination_fqdns     = try(rule.value.destination_fqdns, null)
-          source_addresses      = try(rule.value.source_addresses, null)
-          source_ip_groups      = try(rule.value.source_ip_groups, null)
-        }
-      }
+      proxy_enabled = dns.value.proxy_enabled
+      servers       = dns.value.servers
     }
   }
 
-  dynamic "application_rule_collection" {
-    for_each = toset(
-      each.value.application_rule_collections
-    )
+  dynamic "intrusion_detection" {
+    for_each = lookup(each.value, "intrusion_detection", null) != null ? [each.value.intrusion_detection] : []
 
     content {
-      name     = format("arc-%s", application_rule_collection.value.key)
-      priority = application_rule_collection.value.priority
-      action   = application_rule_collection.value.action
+      mode = intrusion_detection.value.mode
 
-      dynamic "rule" {
-        for_each = application_rule_collection.value.rules
+      dynamic "traffic_bypass" {
+        for_each = lookup(intrusion_detection.value, "traffic_bypass", {})
 
         content {
-          name                  = rule.key
-          description           = try(rule.value.description, null)
-          source_addresses      = try(rule.value.source_addresses, null)
-          source_ip_groups      = try(rule.value.source_ip_groups, null)
-          destination_addresses = try(rule.value.destination_addresses, null)
-          destination_urls      = try(rule.value.destination_urls, null)
-          destination_fqdns     = try(rule.value.destination_fqdns, null)
-          destination_fqdn_tags = try(rule.value.destination_fqdn_tags, null)
-          terminate_tls         = try(rule.value.terminate_tls, null)
-          web_categories        = try(rule.value.web_categories, null)
-
-          dynamic "http_header" {
-            for_each = try(rule.value.http_headers, null)
-
-            content {
-              name  = http_header.value.name
-              value = http_header.value.value
-            }
-          }
-
-          dynamic "protocols" {
-            for_each = rule.value.protocols
-
-            content {
-              type = protocols.value.type
-              port = protocols.value.port
-            }
-          }
+          name                  = traffic_bypass.key
+          protocol              = traffic_bypass.value.protocol
+          description           = lookup(traffic_bypass.value, "description", null)
+          destination_addresses = lookup(traffic_bypass.value, "destination_addresses", [])
+          destination_ip_groups = lookup(traffic_bypass.value, "destination_ip_groups", [])
+          destination_ports     = lookup(traffic_bypass.value, "destination_ports", [])
+          source_addresses      = lookup(traffic_bypass.value, "source_addresses", [])
+          source_ip_groups      = lookup(traffic_bypass.value, "source_ip_groups", [])
         }
       }
-    }
-  }
-
-  dynamic "nat_rule_collection" {
-    for_each = toset(
-      each.value.nat_rule_collections
-    )
-
-    content {
-      name     = format("nrc-%s", nat_rule_collection.value.key)
-      priority = nat_rule_collection.value.priority
-      action   = nat_rule_collection.value.action
-
-      dynamic "rule" {
-        for_each = nat_rule_collection.value.rules
+      dynamic "signature_overrides" {
+        for_each = lookup(intrusion_detection.value, "signature_overrides", {})
 
         content {
-          name                = rule.key
-          description         = try(rule.value.description, null)
-          protocols           = rule.value.protocols
-          source_addresses    = try(rule.value.source_addresses, null)
-          source_ip_groups    = try(rule.value.source_ip_groups, null)
-          destination_address = try(rule.value.destination_address, null)
-          destination_ports   = try(rule.value.destination_ports, null)
-          translated_address  = try(rule.value.translated_address, null)
-          translated_fqdn     = try(rule.value.translated_fqdn, null)
-          translated_port     = try(rule.value.translated_port, null)
+          id    = signature_overrides.value.id
+          state = signature_overrides.value.state
         }
       }
     }

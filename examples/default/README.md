@@ -1,22 +1,8 @@
-module "naming" {
-  source  = "cloudnationhq/naming/azure"
-  version = "~> 0.1"
+This example illustrates the defaul tvirtual wan setup, in its simplest form.
 
-  suffix = ["demo", "dev"]
-}
+## Usage
 
-module "rg" {
-  source  = "cloudnationhq/rg/azure"
-  version = "~> 0.1"
-
-  groups = {
-    demo = {
-      name   = module.naming.resource_group.name
-      region = "northeurope"
-    }
-  }
-}
-
+```hcl
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
   version = "~> 0.1"
@@ -31,3 +17,4 @@ module "vwan" {
     disable_vpn_encryption         = false
   }
 }
+```

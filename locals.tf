@@ -1,87 +1,50 @@
 locals {
-  ip_groups = {
-    group1 = ["192.168.1.0/24"]
-    group2 = ["10.1.0.0"]
+  firewalls = {
+    for fw_key, fw in var.vwan.vhubs : fw_key => {
+
+      name             = try(fw.firewall_name, join("-", [var.naming.firewall, fw_key]))
+      location         = try(fw.location, var.location)
+      resourcegroup    = try(fw.resourcegroup, var.resourcegroup)
+      tier             = try(fw.firewall_tier, "Standard")
+      sku              = try(fw.firewall_sku, "AZFW_Hub")
+      tags             = try(fw.tags, {})
+      public_ip_count  = try(fw.firewall_public_ip_count, 1)
+      associate_policy = try(fw.associate_policy, true)
+    }
   }
 }
 
 locals {
-  firewall_rule_collection_groups_list = {
-    default = {
-      priority = 50000
-      network_rule_collections = [
-        {
-          key      = "network_rule_collections_test_2"
-          priority = 60000
-          action   = "Allow"
-          rules = {
-            rule1 = {
-              protocols             = ["TCP"]
-              destination_ports     = ["*"]
-              destination_addresses = ["10.0.1.0/8"]
-              source_addresses      = ["10.0.0.0/8"]
-            }
-            rule2 = {
-              protocols             = ["TCP"]
-              destination_ports     = ["*"]
-              destination_addresses = ["12.0.1.0/8"]
-              source_addresses      = ["12.0.0.0/8"]
-            }
-            rule3 = {
-              protocols             = ["TCP"]
-              destination_ports     = ["*"]
-              destination_addresses = local.ip_groups.group2
-              source_addresses      = ["10.0.0.0/8"]
-            }
-          }
-        }
-      ]
-      application_rule_collections = [
-        {
-          key      = "app_rule_collection_1"
-          priority = 10000
-          action   = "Deny"
-          rules = {
-            rule1 = {
-              source_addresses  = ["10.0.0.1"]
-              destination_fqdns = ["*.microsoft.com"]
-              protocols = [
-                {
-                  type = "Https"
-                  port = 443
-                }
-              ]
-            }
-            rule2 = {
-              source_addresses  = ["10.0.0.1"]
-              destination_fqdns = ["*.bing.com"]
-              protocols = [
-                {
-                  type = "Https"
-                  port = 443
-                }
-              ]
-            }
-          }
-        },
-      ]
-      nat_rule_collections = [
-        {
-          key      = "nat_rule_collection_1"
-          priority = 20000
-          action   = "Dnat"
-          rules = {
-            rule1 = {
-              source_addresses    = ["145.23.23.23", "10.0.0.0/8"]
-              destination_ports   = ["4430"]
-              destination_address = "20.23.230.20" # public ip firewall
-              translated_port     = "443"
-              translated_address  = "10.0.0.10"
-              protocols           = ["TCP"]
-            }
-          }
-        }
-      ]
+  vhubs = {
+    for vh_key, vh in var.vwan.vhubs : vh_key => {
+
+      name                   = try(vh.name, join("-", [var.naming.virtual_hub, vh_key]))
+      location               = try(vh.location, var.location)
+      resourcegroup          = try(vh.resourcegroup, var.resourcegroup)
+      address_prefix         = vh.address_prefix
+      sku                    = try(vh.sku, "Standard")
+      hub_routing_preference = try(vh.hub_routing_preference, "ExpressRoute")
+      tags                   = try(vh.tags, {})
+    }
+  }
+}
+
+locals {
+  firewall_policies = {
+    for fwp_key, fwp in var.vwan.vhubs : fwp_key => {
+
+      name                              = try(fwp.policy.name, join("-", [var.naming.firewall_policy, fwp_key]))
+      base_policy_id                    = try(fwp.policy.base_policy_id, null)
+      location                          = try(fwp.policy.location, var.location)
+      resourcegroup                     = try(fwp.resourcegroup, var.resourcegroup)
+      dns                               = try(fwp.policy.dns, null)
+      intrusion_detection               = try(fwp.policy.intrusion_detection, null)
+      tags                              = try(fwp.tags, {})
+      private_ip_ranges                 = try(fwp.policy.private_ip_ranges, null)
+      sku                               = try(fwp.policy.sku, "Standard")
+      sql_redirect_allowed              = try(fwp.policy.sql_redirect_allowed, null)
+      threat_intelligence_mode          = try(fwp.policy.threat_intelligence_mode, "Alert")
+      auto_learn_private_ranges_enabled = try(fwp.policy.auto_learn_private_ranges_enabled, null)
     }
   }
 }

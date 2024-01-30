@@ -21,13 +21,14 @@ module "vwan" {
   source  = "cloudnationhq/vwan/azure"
   version = "~> 0.1"
 
-  naming = local.naming
-
-  resourcegroup = module.rg.groups.demo.name
+  naming        = local.naming
   location      = module.rg.groups.demo.location
+  resourcegroup = module.rg.groups.demo.name
 
   vwan = {
     allow_branch_to_branch_traffic = true
     disable_vpn_encryption         = false
+
+    vhubs = local.vhubs
   }
 }
