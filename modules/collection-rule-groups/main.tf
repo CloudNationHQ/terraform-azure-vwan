@@ -2,7 +2,7 @@
 resource "azurerm_ip_group" "ipgroup" {
   for_each = try(var.ip_groups, {})
 
-  name                = coalesce(lookup(each.value, "name", null), join("-", [var.naming.ip_group, each.key]))
+  name                = try(each.value.name, join("-", [var.naming.ip_group, each.key]))
   location            = var.location
   resource_group_name = var.resourcegroup
 
