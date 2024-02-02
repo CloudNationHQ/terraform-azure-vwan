@@ -38,7 +38,7 @@ module "vwan" {
 }
 
 module "collection_rule_groups" {
-  source = "cloudnationhq/vwan/azure//modules/collection-rule-groups"
+  source  = "cloudnationhq/vwan/azure//modules/collection-rule-groups"
   version = "~> 0.1"
 
   naming    = local.naming

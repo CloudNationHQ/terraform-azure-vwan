@@ -4,8 +4,9 @@ variable "groups" {
 }
 
 variable "ip_groups" {
-  type    = any
-  default = {}
+  description = "describes all ip groups"
+  type        = map(any)
+  default     = {}
 }
 
 variable "location" {

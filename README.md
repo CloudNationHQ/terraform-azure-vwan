@@ -34,6 +34,13 @@ A last key goal is to separate logic from configuration in the module, thereby e
 |------|---------|
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 3.61 |
 
+## Modules
+
+| Name | Source |
+|------|--------|
+| [collection-rule-groups](./modules/collection-rule-groups) | resource |
+| [firewall-policy](./modules/firewall-policy) | resource |
+
 ## Resources
 
 | Name | Type |

@@ -37,7 +37,7 @@ resource "azurerm_firewall" "fw" {
   sku_tier            = each.value.tier
   sku_name            = each.value.sku
   tags                = each.value.tags
-  firewall_policy_id = each.value.associate_policy ? azurerm_firewall_policy.fwp[each.key].id : null
+  firewall_policy_id  = each.value.associate_policy ? azurerm_firewall_policy.fwp[each.key].id : null
 
   virtual_hub {
     virtual_hub_id  = azurerm_virtual_hub.vhub[each.key].id
