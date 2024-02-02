@@ -1,5 +1,7 @@
 # Collection Rule Groups
 
+This submodule illustrates how to manage collection groups through the use of IP groups within secure virtual hubs.
+
 ## Requirements
 
 | Name | Version |
@@ -26,7 +28,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_groups"></a> [groups](#input\_groups) | contains all firewall policy rule collection groups config | `any` | n/a | yes |
-| <a name="input_ip_groups"></a> [ip\_groups](#input\_ip\_groups) | n/a | `any` | `{}` | no |
+| <a name="input_ip_groups"></a> [ip\_groups](#input\_ip\_groups) | describes all ip groups | `map(any)` | `{}` | no |
 | <a name="input_location"></a> [location](#input\_location) | contains the region | `string` | `null` | no |
 | <a name="input_naming"></a> [naming](#input\_naming) | contains naming convention | `map(string)` | `null` | no |
 | <a name="input_resourcegroup"></a> [resourcegroup](#input\_resourcegroup) | contains the resourcegroup name | `string` | `null` | no |

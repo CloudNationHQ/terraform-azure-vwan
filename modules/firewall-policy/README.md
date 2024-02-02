@@ -1,5 +1,7 @@
 # Firewall Policy
 
+This submodule focuses on the effective management of firewall policies.
+
 ## Requirements
 
 | Name | Version |
