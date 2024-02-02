@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.2.2...v0.3.0) (2024-02-02)
+
+
+### Features
+
+* update documentation submodules ([#12](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/12)) ([7a2a289](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/7a2a2895efaa09fa16ec85c90389554454f8f4df))
+
 ## [0.2.2](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.2.1...v0.2.2) (2024-01-31)
 
 
