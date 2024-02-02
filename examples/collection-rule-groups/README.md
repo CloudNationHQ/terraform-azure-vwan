@@ -5,7 +5,7 @@ This example demonstrates managing collection groups using IP groups within secu
 ```hcl
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 0.2"
+  version = "~> 0.3"
 
   naming        = local.naming
   location      = module.rg.groups.demo.location
