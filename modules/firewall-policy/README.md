@@ -33,4 +33,4 @@ This submodule focuses on the effective management of firewall policies.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_policy"></a> [policy](#output\_policy) | n/a |
+| <a name="output_policy"></a> [policy](#output\_policy) | contains all firewall policy configuration |
