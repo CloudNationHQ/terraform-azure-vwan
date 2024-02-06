@@ -22,7 +22,7 @@ resource "azurerm_virtual_hub" "vhub" {
   virtual_wan_id         = azurerm_virtual_wan.vwan.id
   sku                    = each.value.sku
   hub_routing_preference = each.value.hub_routing_preference
-  tags                   = each.value.tags
+  #tags                   = each.value.tags
 }
 
 # firewalls
@@ -64,9 +64,10 @@ resource "azurerm_firewall_policy" "fwp" {
 
   dynamic "dns" {
     for_each = each.value.dns != null ? [each.value.dns] : []
+
     content {
-      proxy_enabled = dns.value.proxy_enabled
-      servers       = dns.value.servers
+      proxy_enabled = try(dns.value.proxy_enabled, false)
+      servers       = try(dns.value.servers, [])
     }
   }
 

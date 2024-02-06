@@ -16,8 +16,8 @@ resource "azurerm_firewall_policy" "policy" {
     for_each = lookup(each.value, "dns", null) != null ? [each.value.dns] : []
 
     content {
-      proxy_enabled = dns.value.proxy_enabled
-      servers       = dns.value.servers
+      proxy_enabled = try(dns.value.proxy_enabled, false)
+      servers       = try(dns.value.servers, [])
     }
   }
 
