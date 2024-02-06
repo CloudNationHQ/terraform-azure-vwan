@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.5.0...v0.5.1) (2024-02-06)
+
+
+### Bug Fixes
+
+* fix wrong reference threat intelligence allowlist block ([#18](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/18)) ([eb310d4](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/eb310d4e4a15f7d94d0545775280c672d30cc419))
+
 ## [0.5.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.4.0...v0.5.0) (2024-02-06)
 
 
