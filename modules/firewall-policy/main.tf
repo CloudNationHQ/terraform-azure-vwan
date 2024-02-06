@@ -50,6 +50,14 @@ resource "azurerm_firewall_policy" "policy" {
           state = signature_overrides.value.state
         }
       }
+
+      dynamic "threat_intelligence_allowlist" {
+        for_each = try(each.value.threat_intelligence_mode, "AlertOnly") != "Off" ? [1] : []
+        content {
+          fqdns        = try(each.value.threat_intelligence_allowlist.fqdns, [])
+          ip_addresses = try(each.value.threat_intelligence_allowlist.ip_addresses, [])
+        }
+      }
     }
   }
 }
