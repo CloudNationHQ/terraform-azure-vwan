@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.4.0...v0.5.0) (2024-02-06)
+
+
+### Features
+
+* add threat intelligence allow list support on submodule ([#16](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/16)) ([b5200ca](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/b5200ca7a5c00c64c00ca260ca422ee63a3eeacf))
+
 ## [0.4.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.3.0...v0.4.0) (2024-02-06)
 
 
