@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.3.0...v0.4.0) (2024-02-06)
+
+
+### Features
+
+* change firewall policy dns defaults ([#14](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/14)) ([8b99b6b](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/8b99b6b5df06836356fe6802c8b3d38a23eb01c0))
+
 ## [0.3.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.2.2...v0.3.0) (2024-02-02)
 
 
