@@ -64,9 +64,10 @@ resource "azurerm_firewall_policy" "fwp" {
 
   dynamic "dns" {
     for_each = each.value.dns != null ? [each.value.dns] : []
+
     content {
-      proxy_enabled = dns.value.proxy_enabled
-      servers       = dns.value.servers
+      proxy_enabled = try(dns.value.proxy_enabled, false)
+      servers       = try(dns.value.servers, [])
     }
   }
 

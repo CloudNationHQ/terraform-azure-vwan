@@ -51,7 +51,8 @@ module "collection_rule_groups" {
 }
 
 module "fwp_inheritance" {
-  source = "cloudnationhq/vwan/azure//modules/firewall-policy"
+  source  = "cloudnationhq/vwan/azure//modules/firewall-policy"
+  version = "~> 0.1"
 
   resourcegroup = module.rg.groups.demo.name
   location      = module.rg.groups.demo.location
