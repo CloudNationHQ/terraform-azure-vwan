@@ -33,8 +33,7 @@ module "vwan" {
         location       = "westeurope"
         address_prefix = "10.0.0.0/23"
         policy = {
-          name     = module.naming.firewall_policy.name
-          location = "westeurope"
+          base_policy_id = module.fwpolicy.policy.parent.id
         }
       }
     }
@@ -47,6 +46,34 @@ module "collection_rule_groups" {
 
   naming = local.naming
   groups = local.collection_rule_groups
+
+  resourcegroup = module.rg.groups.demo.name
+  location      = module.rg.groups.demo.location
+
+  depends_on = [module.vwan, module.ip_groups]
+}
+
+module "fwpolicy" {
+  source  = "cloudnationhq/vwan/azure//modules/firewall-policy"
+  version = "~> 0.1"
+
+  resourcegroup = module.rg.groups.demo.name
+  location      = module.rg.groups.demo.location
+
+  policy = {
+    parent = {
+      name = "fwp-demo-dev-parent"
+    }
+  }
+}
+
+module "ip_groups" {
+  source  = "cloudnationhq/vwan/azure//modules/ip-groups"
+  version = "~> 0.1"
+
+  naming     = local.naming
+  ip_groups  = local.ip_groups
+  depends_on = [module.vwan]
 
   resourcegroup = module.rg.groups.demo.name
   location      = module.rg.groups.demo.location

@@ -12,7 +12,7 @@ module "rg" {
   groups = {
     demo = {
       name   = module.naming.resource_group.name
-      region = "northeurope"
+      region = "westeurope"
     }
   }
 }
@@ -27,13 +27,13 @@ module "vwan" {
 
   vwan = {
     vhubs = {
-      northeurope = {
+      westeurope = {
         name           = module.naming.virtual_hub.name
         resourcegroup  = module.rg.groups.demo.name
-        location       = "northeurope"
+        location       = "westeurope"
         address_prefix = "10.0.0.0/23"
         policy = {
-          base_policy_id = module.fwp_inheritance.policy.base.id
+          base_policy_id = module.fwpolicy.policy.parent.id
         }
       }
     }
@@ -50,7 +50,7 @@ module "collection_rule_groups" {
   location      = module.rg.groups.demo.location
 }
 
-module "fwp_inheritance" {
+module "fwpolicy" {
   source  = "cloudnationhq/vwan/azure//modules/firewall-policy"
   version = "~> 0.1"
 
@@ -58,8 +58,8 @@ module "fwp_inheritance" {
   location      = module.rg.groups.demo.location
 
   policy = {
-    base = {
-      name = "fwp-demo-dev-base"
+    parent = {
+      name = "fwp-demo-dev-parent"
     }
   }
 }

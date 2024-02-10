@@ -10,18 +10,18 @@ locals {
 locals {
   collection_rule_groups = {
     default = {
-      priority           = 50000
-      firewall_policy_id = module.vwan.firewall_policy.northeurope.id
-      network_rule_collections = [
-        {
-          key      = "netw_rules"
-          priority = 60000
+      priority           = 1000
+      firewall_policy_id = module.vwan.policy.westeurope.id
+      network_rule_collections = {
+        netw_rules = {
+          name     = "netwrules"
+          priority = 7000
           action   = "Allow"
           rules = {
             rule1 = {
               protocols             = ["TCP"]
               destination_ports     = ["*"]
-              destination_addresses = local.ip_groups.deny.cidr
+              destination_addresses = ["10.0.1.0/8"]
               source_addresses      = ["10.0.0.0/8"]
             }
             rule2 = {
@@ -32,11 +32,11 @@ locals {
             }
           }
         }
-      ]
-      application_rule_collections = [
-        {
-          key      = "app_rules"
-          priority = 10000
+      }
+      application_rule_collections = {
+        app_rules = {
+          name     = "apprules"
+          priority = 6000
           action   = "Deny"
           rules = {
             rule1 = {
@@ -60,12 +60,12 @@ locals {
               ]
             }
           }
-        },
-      ]
-      nat_rule_collections = [
-        {
-          key      = "nat_rules"
-          priority = 20000
+        }
+      }
+      nat_rule_collections = {
+        nat_rules = {
+          name     = "natrules"
+          priority = 8000
           action   = "Dnat"
           rules = {
             rule1 = {
@@ -78,18 +78,7 @@ locals {
             }
           }
         }
-      ]
-    }
-  }
-}
-
-locals {
-  ip_groups = {
-    allow = {
-      cidr = ["192.168.1.0/24"]
-    }
-    deny = {
-      cidr = ["10.2.0.0/24"]
+      }
     }
   }
 }

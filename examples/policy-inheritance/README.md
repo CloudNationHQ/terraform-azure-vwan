@@ -55,7 +55,7 @@ module "fwp_inheritance" {
 }
 ```
 
-The local variable defined below will be utilized.
+The local below is utilized to store config,
 
 ```hcl
 locals {

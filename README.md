@@ -64,7 +64,7 @@ A last key goal is to separate logic from configuration in the module, thereby e
 | Name | Description |
 | :-- | :-- |
 | `vwan` | contains virtual wan configuration |
-| `firewall_policy` | contains firewall policy configuration |
+| `policy` | contains firewall policy configuration |
 | `vhub` | contains virtual hub configuration |
 | `firewall` | contains firewall configuration |
 | `firewall_public_ip_addresses` | list of public ip addresses associated with the firewall |

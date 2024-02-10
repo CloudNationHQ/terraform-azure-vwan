@@ -1,6 +1,7 @@
-variable "groups" {
-  description = "contains all firewall policy rule collection groups config"
-  type        = any
+variable "ip_groups" {
+  description = "describes all ip groups"
+  type        = map(any)
+  default     = {}
 }
 
 variable "location" {

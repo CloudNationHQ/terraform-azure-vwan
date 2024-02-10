@@ -1,24 +1,3 @@
-# ip groups
-resource "azurerm_ip_group" "ipgroup" {
-  for_each = try(var.ip_groups, {})
-
-  name                = try(each.value.name, join("-", [var.naming.ip_group, each.key]))
-  location            = var.location
-  resource_group_name = var.resourcegroup
-
-  lifecycle {
-    ignore_changes = [cidrs]
-  }
-}
-
-# ip group cidrs
-resource "azurerm_ip_group_cidr" "ipcidr" {
-  for_each = local.flattened_ip_groups
-
-  ip_group_id = azurerm_ip_group.ipgroup[each.value.group].id
-  cidr        = each.value.cidr
-}
-
 # collection groups
 resource "azurerm_firewall_policy_rule_collection_group" "group" {
   for_each = var.groups
@@ -28,12 +7,10 @@ resource "azurerm_firewall_policy_rule_collection_group" "group" {
   priority           = each.value.priority
 
   dynamic "network_rule_collection" {
-    for_each = toset(
-      try(each.value.network_rule_collections, [])
-    )
+    for_each = contains(keys(each.value), "network_rule_collections") ? each.value.network_rule_collections : tomap({})
 
     content {
-      name     = try(network_rule_collection.value.name, format("nrc-%s", network_rule_collection.value.key))
+      name     = try(network_rule_collection.name, network_rule_collection.key)
       priority = network_rule_collection.value.priority
       action   = network_rule_collection.value.action
 
@@ -45,20 +22,18 @@ resource "azurerm_firewall_policy_rule_collection_group" "group" {
           description           = try(rule.value.description, null)
           protocols             = rule.value.protocols
           destination_ports     = rule.value.destination_ports
-          destination_addresses = try(rule.value.destination_addresses, null)
-          destination_ip_groups = try(rule.value.destination_ip_groups, null)
-          destination_fqdns     = try(rule.value.destination_fqdns, null)
-          source_addresses      = try(rule.value.source_addresses, null)
-          source_ip_groups      = try(rule.value.source_ip_groups, null)
+          destination_addresses = try(rule.value.destination_addresses, [])
+          destination_fqdns     = try(rule.value.destination_fqdns, [])
+          source_addresses      = try(rule.value.source_addresses, [])
+          source_ip_groups      = try(rule.value.source_ip_groups, [])
+          destination_ip_groups = try(rule.value.destination_ip_groups, [])
         }
       }
     }
   }
 
   dynamic "application_rule_collection" {
-    for_each = toset(
-      try(each.value.application_rule_collections, [])
-    )
+    for_each = contains(keys(each.value), "application_rule_collections") ? each.value.application_rule_collections : tomap({})
 
     content {
       name     = try(application_rule_collection.value.name, format("arc-%s", application_rule_collection.value.key))
@@ -95,12 +70,10 @@ resource "azurerm_firewall_policy_rule_collection_group" "group" {
   }
 
   dynamic "nat_rule_collection" {
-    for_each = toset(
-      try(each.value.nat_rule_collections, [])
-    )
+    for_each = contains(keys(each.value), "nat_rule_collections") ? each.value.nat_rule_collections : tomap({})
 
     content {
-      name     = try(nate_rule_collection.value.name, format("nrc-%s", nat_rule_collection.value.key))
+      name     = try(nat_rule_collection.value.name, format("nrc-%s", nat_rule_collection.value.key))
       priority = nat_rule_collection.value.priority
       action   = nat_rule_collection.value.action
 
