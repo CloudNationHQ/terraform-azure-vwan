@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.5.1...v0.6.0) (2024-02-10)
+
+
+### Features
+
+* add ip groups submodule and small refactors ([#20](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/20)) ([90fcdca](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/90fcdca57122cbfd03cfb0e07f62becb5513871d))
+
 ## [0.5.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.5.0...v0.5.1) (2024-02-06)
 
 
