@@ -5,7 +5,7 @@ This example illustrates firewall policy inheritance using multiple secure vhubs
 ```hcl
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 0.5"
+  version = "~> 0.6"
 
   naming        = local.naming
   location      = module.rg.groups.demo.location
