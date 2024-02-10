@@ -1,4 +1,4 @@
-output "firewall_policy" {
+output "policy" {
   description = "contains firewall policy configuration"
   value = {
     for k, policy in azurerm_firewall_policy.fwp : k => policy
