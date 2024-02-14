@@ -36,7 +36,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "group" {
     for_each = contains(keys(each.value), "application_rule_collections") ? each.value.application_rule_collections : tomap({})
 
     content {
-      name     = try(application_rule_collection.value.name, format("arc-%s", application_rule_collection.value.key))
+      name     = try(application_rule_collection.name, application_rule_collection.key)
       priority = application_rule_collection.value.priority
       action   = application_rule_collection.value.action
 
@@ -73,7 +73,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "group" {
     for_each = contains(keys(each.value), "nat_rule_collections") ? each.value.nat_rule_collections : tomap({})
 
     content {
-      name     = try(nat_rule_collection.value.name, format("nrc-%s", nat_rule_collection.value.key))
+      name     = try(nat_rule_collection.name, nat_rule_collection.key)
       priority = nat_rule_collection.value.priority
       action   = nat_rule_collection.value.action
 
