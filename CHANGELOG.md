@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.6.0...v0.6.1) (2024-02-14)
+
+
+### Bug Fixes
+
+* fix conditional expression rule collection names ([#22](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/22)) ([4adbd1a](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/4adbd1a249a5472c8997a01b88efc86780fa1442))
+
 ## [0.6.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.5.1...v0.6.0) (2024-02-10)
 
 
