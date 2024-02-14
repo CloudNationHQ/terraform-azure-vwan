@@ -22,7 +22,7 @@ resource "azurerm_virtual_hub" "vhub" {
   virtual_wan_id         = azurerm_virtual_wan.vwan.id
   sku                    = each.value.sku
   hub_routing_preference = each.value.hub_routing_preference
-  #tags                   = each.value.tags
+  tags                   = each.value.tags
 }
 
 # firewalls

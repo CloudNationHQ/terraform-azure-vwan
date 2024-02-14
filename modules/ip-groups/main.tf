@@ -5,6 +5,7 @@ resource "azurerm_ip_group" "ipgroup" {
   name                = try(each.value.name, join("-", [var.naming.ip_group, each.key]))
   location            = var.location
   resource_group_name = var.resourcegroup
+  tags                = try(each.value.tags, {})
 
   lifecycle {
     ignore_changes = [cidrs]
