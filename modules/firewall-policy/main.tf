@@ -2,7 +2,7 @@
 resource "azurerm_firewall_policy" "policy" {
   for_each = try(var.policy, {})
 
-  name                              = each.value.name
+  name                              = try(each.value.name, join("-", [var.naming.firewall_policy, each.key]))
   location                          = var.location
   resource_group_name               = var.resourcegroup
   tags                              = try(each.value.tags, {})

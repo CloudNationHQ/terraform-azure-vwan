@@ -6,6 +6,7 @@ variable "vwan" {
 variable "naming" {
   description = "contains naming convention"
   type        = map(string)
+  default     = null
 }
 
 variable "location" {
