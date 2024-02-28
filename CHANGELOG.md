@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.7.0...v0.8.0) (2024-02-28)
+
+
+### Features
+
+* improve conditional expression threat intelligence allowlist block ([#26](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/26)) ([53b5cc2](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/53b5cc215e1e88b82af8a2a46f34c5da6a6f8fb9))
+
 ## [0.7.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.6.1...v0.7.0) (2024-02-14)
 
 
