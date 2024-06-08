@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.9.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.8.0...v0.9.0) (2024-06-08)
+
+
+### Features
+
+* create pull request template ([#34](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/34)) ([9bbff05](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/9bbff05b91bdc856e65a1fd755a65f36903f2c6a))
+* **deps:** bump github.com/gruntwork-io/terratest in /tests ([#33](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/33)) ([3823a58](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/3823a58fe1b3318d30e2d83c4c2dc46371d79959))
+* **deps:** bump github.com/hashicorp/go-getter in /tests ([#31](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/31)) ([31588fd](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/31588fd90357bcca5c9731cc62dcd4793614f102))
+* **deps:** bump golang.org/x/net from 0.17.0 to 0.23.0 in /tests ([#30](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/30)) ([56cee6b](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/56cee6b4a632d3243a9cf144aca7a8fcb151336d))
+* **deps:** bump google.golang.org/protobuf in /tests ([#28](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/28)) ([f3332b0](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/f3332b090c9e0106b351f58fbd4328f762b151c2))
+
 ## [0.8.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.7.0...v0.8.0) (2024-02-28)
 
 
