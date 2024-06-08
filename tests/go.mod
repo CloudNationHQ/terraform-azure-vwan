@@ -2,7 +2,7 @@ module github.com/cloudnationhq/terraform-azure-vwan
 
 go 1.20
 
-require github.com/gruntwork-io/terratest v0.46.11
+require github.com/gruntwork-io/terratest v0.46.15
 
 require (
 	cloud.google.com/go v0.110.0 // indirect
