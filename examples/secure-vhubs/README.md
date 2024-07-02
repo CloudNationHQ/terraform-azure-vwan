@@ -5,7 +5,7 @@ This example illustrates configuring multiple secure virtual hubs with their ass
 ```hcl
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 0.9"
+  version = "~> 0.10"
 
   naming        = local.naming
   location      = module.rg.groups.demo.location

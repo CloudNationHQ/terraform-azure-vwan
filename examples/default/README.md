@@ -5,7 +5,7 @@ This example illustrates the defaul tvirtual wan setup, in its simplest form.
 ```hcl
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 0.9"
+  version = "~> 0.10"
 
   naming = local.naming
 
