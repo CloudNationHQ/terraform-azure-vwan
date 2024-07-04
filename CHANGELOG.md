@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.10.0...v0.11.0) (2024-07-04)
+
+
+### Features
+
+* update contribution docs ([#40](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/40)) ([4e96312](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/4e96312c73dac1b354be0eaaa2ddf0057e3c0e94))
+
 ## [0.10.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.9.0...v0.10.0) (2024-07-02)
 
 
