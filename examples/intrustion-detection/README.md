@@ -5,7 +5,7 @@ This example highlights intrusion detection within secure virtual hubs.
 ```hcl
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 0.10"
+  version = "~> 0.11"
 
   naming        = local.naming
   location      = module.rg.groups.demo.location
