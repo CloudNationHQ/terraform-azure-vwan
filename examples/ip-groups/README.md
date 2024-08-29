@@ -5,7 +5,7 @@ This example highlights the seamless integration of IP groups and collection rul
 ```hcl
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 0.10"
+  version = "~> 0.11"
 
   naming        = local.naming
   location      = module.rg.groups.demo.location
