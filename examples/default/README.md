@@ -1,20 +1,15 @@
-This example illustrates the defaul tvirtual wan setup, in its simplest form.
+# Default
 
-## Usage
+This example illustrates the default setup, in its simplest form.
+
+## Types
 
 ```hcl
-module "vwan" {
-  source  = "cloudnationhq/vwan/azure"
-  version = "~> 0.11"
-
-  naming = local.naming
-
-  resourcegroup = module.rg.groups.demo.name
-  location      = module.rg.groups.demo.location
-
-  vwan = {
-    allow_branch_to_branch_traffic = true
-    disable_vpn_encryption         = false
-  }
-}
+vwan = object({
+  name             = string
+  resource_group   = string
+  location         = string
+  allow_branch_to_branch_traffic = optional(bool)
+  disable_vpn_encryption         = optional(bool)
+})
 ```
