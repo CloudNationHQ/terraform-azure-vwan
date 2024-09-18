@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.12.0...v1.0.0) (2024-09-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* * data structure has changed due to renaming of properties and removal of resources.
+
+### Features
+
+* aligned several properties and resources ([#47](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/47)) ([f155777](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/f1557774ee77f369689b86dff4818ab3a639b46d))
+
 ## [0.12.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.11.0...v0.12.0) (2024-08-29)
 
 
