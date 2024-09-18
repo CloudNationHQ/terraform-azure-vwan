@@ -24,12 +24,9 @@ End-to-end testing is not conducted on these modules, as they are individual com
 
 ## Features
 
-- simplified virtual wan deployment across regions
+- simplified virtual wan deployment
 - multiple secure virtual hub support
 - utilization of terratest for robust validation
-- multiple collection groups, collections and rules support
-- optional ip group integration in collection rule groups
-- supports base and child policy inheritance
 
 ## Requirements
 
@@ -44,22 +41,10 @@ End-to-end testing is not conducted on these modules, as they are individual com
 |------|---------|
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 3.61 |
 
-## Modules
-
-| Name | Source |
-|------|--------|
-| [collection-rule-groups](./modules/collection-rule-groups) | resource |
-| [firewall-policy](./modules/firewall-policy) | resource |
-
 ## Resources
 
 | Name | Type |
 |------|------|
-| [azurerm_firewall](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/firewall) | resource |
-| [azurerm_firewall_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/firewall_policy) | resource |
-| [azurerm_firewall_policy_rule_collection_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/firewall_policy_rule_collection_group) | resource |
-| [azurerm_ip_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/ip_group) | resource |
-| [azurerm_ip_group_cidr](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/ip_group_cidr) | resource |
 | [azurerm_virtual_hub](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_hub) | resource |
 | [azurerm_virtual_wan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_wan) | resource |
 
@@ -70,17 +55,14 @@ End-to-end testing is not conducted on these modules, as they are individual com
 | `vwan` | describes virtual wan configuration | object | yes |
 | `naming` | contains naming convention | string | yes |
 | `location` | default azure region and can be used if location is not specified inside the object | string | no |
-| `resourcegroup` | default resource group and can be used if resourcegroup is not specified inside the object | string | no |
+| `resource_group` | default resource group and can be used if resourcegroup is not specified inside the object | string | no |
 
 ## Outputs
 
 | Name | Description |
 | :-- | :-- |
 | `vwan` | contains virtual wan configuration |
-| `policy` | contains firewall policy configuration |
-| `vhub` | contains virtual hub configuration |
-| `firewall` | contains firewall configuration |
-| `firewall_public_ip_addresses` | list of public ip addresses associated with the firewall |
+| `vhubs` | contains virtual hub configuration |
 
 ## Testing
 
