@@ -1,6 +1,6 @@
 variable "configs" {
   description = "the configurations for the routing intents."
-  type = any
+  type        = any
 }
 
 variable "resource_group" {
