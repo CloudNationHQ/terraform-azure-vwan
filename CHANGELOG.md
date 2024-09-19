@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v1.0.0...v1.1.0) (2024-09-19)
+
+
+### Features
+
+* add support for vpn gateways, sites and connections ([#50](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/50)) ([0b6266e](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/0b6266e70fca1a7e274b2efc84b817b5cca561a8))
+
 ## [1.0.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v0.12.0...v1.0.0) (2024-09-18)
 
 
