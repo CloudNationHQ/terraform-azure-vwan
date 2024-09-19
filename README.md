@@ -27,6 +27,9 @@ End-to-end testing is not conducted on these modules, as they are individual com
 - simplified virtual wan deployment
 - multiple secure virtual hub support
 - utilization of terratest for robust validation
+- ability to define and manage routing intents on virtual hubs for enhanced traffic control and routing flexibility
+- vpn gateway support on virtual hubs with multi-site and link connectivity
+- ability to configure multiple vpn gateway connections on sites
 
 ## Requirements
 
@@ -47,6 +50,9 @@ End-to-end testing is not conducted on these modules, as they are individual com
 |------|------|
 | [azurerm_virtual_hub](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_hub) | resource |
 | [azurerm_virtual_wan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_wan) | resource |
+| [azurerm_vpn_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_gateway) | resource |
+| [azurerm_vpn_gateway_connection](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_gateway_connection) | resource |
+| [azurerm_vpn_site](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_site) | resource |
 
 ## Inputs
 

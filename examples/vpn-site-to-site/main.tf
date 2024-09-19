@@ -38,7 +38,15 @@ module "firewall" {
   version = "~> 1.0"
 
   resource_group = module.rg.groups.demo.name
-  for_each       = local.firewalls
 
-  instance = each.value
+  instance = {
+    name     = module.naming.firewall.name
+    location = module.rg.groups.demo.location
+
+    sku_name = "AZFW_Hub"
+    sku_tier = "Standard"
+    virtual_hub = {
+      virtual_hub_id = module.vwan.vhubs.weu.id
+    }
+  }
 }
