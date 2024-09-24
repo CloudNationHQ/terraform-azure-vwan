@@ -7,7 +7,7 @@ module "naming" {
 
 module "rg" {
   source  = "cloudnationhq/rg/azure"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   groups = {
     demo = {
@@ -19,7 +19,7 @@ module "rg" {
 
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   naming = local.naming
 
@@ -35,7 +35,7 @@ module "vwan" {
 
 module "routing_intents" {
   source  = "cloudnationhq/vwan/azure//modules/route-intent"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   resource_group = module.rg.groups.demo.name
 
