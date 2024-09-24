@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v1.1.0...v2.0.0) (2024-09-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* * Version 4 of the azurerm provider includes breaking changes.
+
+### Features
+
+* upgrade azurerm provder to v4 ([#52](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/52)) ([c1eadc6](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/c1eadc61c67735b38f5bc2140259f7b0db6af7c6))
+
 ## [1.1.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v1.0.0...v1.1.0) (2024-09-19)
 
 
