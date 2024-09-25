@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v2.0.0...v2.0.1) (2024-09-25)
+
+
+### Bug Fixes
+
+* fix global tags and updated documentation ([#54](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/54)) ([8da21d7](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/8da21d7ccc221be21981610b186137c384a217db))
+
 ## [2.0.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v1.1.0...v2.0.0) (2024-09-24)
 
 
