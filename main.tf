@@ -7,7 +7,7 @@ resource "azurerm_virtual_wan" "vwan" {
   disable_vpn_encryption            = try(var.vwan.disable_vpn_encryption, false)
   type                              = try(var.vwan.type, "Standard")
   office365_local_breakout_category = try(var.vwan.office365_local_breakout_category, "None")
-  tags                              = try(var.vwan.tags, {})
+  tags                              = try(var.vwan.tags, var.tags)
 }
 
 # vhubs
@@ -23,7 +23,7 @@ resource "azurerm_virtual_hub" "vhub" {
   virtual_wan_id         = azurerm_virtual_wan.vwan.id
   sku                    = try(each.value.sku, "Standard")
   hub_routing_preference = try(each.value.hub_routing_preference, "ExpressRoute")
-  tags                   = try(each.value.tags, {})
+  tags                   = try(each.value.tags, var.tags)
 }
 
 # vpn gateway
@@ -37,7 +37,7 @@ resource "azurerm_vpn_gateway" "vpn_gateway" {
   location            = coalesce(lookup(each.value, "location", null), var.location)
   virtual_hub_id      = azurerm_virtual_hub.vhub[each.key].id
   routing_preference  = lookup(each.value.vpn_gateway, "routing_preference", null)
-  tags                = try(var.vwan.tags, {})
+  tags                = try(var.vwan.tags, var.tags)
 }
 
 # vpn sites
@@ -61,7 +61,7 @@ resource "azurerm_vpn_site" "vpn_site" {
   address_cidrs       = [each.value.address_prefix]
   device_vendor       = try(each.value.device_vendor, "Microsoft")
   device_model        = try(each.value.device_model, "VpnSite")
-  tags                = try(var.vwan.tags, {})
+  tags                = try(var.vwan.tags, var.tags)
 
   dynamic "link" {
     # minimal of one link is required

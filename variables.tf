@@ -20,3 +20,9 @@ variable "resource_group" {
   type        = string
   default     = null
 }
+
+variable "tags" {
+  description = "default tags to be used."
+  type        = map(string)
+  default     = {}
+}
