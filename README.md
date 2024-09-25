@@ -36,13 +36,13 @@ End-to-end testing is not conducted on these modules, as they are individual com
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.61 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.3 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 3.61 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 4.3 |
 
 ## Resources
 
@@ -63,6 +63,7 @@ End-to-end testing is not conducted on these modules, as they are individual com
 | `naming` | contains naming convention | string | yes |
 | `location` | default azure region and can be used if location is not specified inside the object | string | no |
 | `resource_group` | default resource group and can be used if resourcegroup is not specified inside the object | string | no |
+| `tags` | tags to be added to the resources | map(string) | no |
 
 ## Outputs
 
