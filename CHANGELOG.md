@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v2.0.1...v2.1.0) (2024-10-11)
+
+
+### Features
+
+* auto generated docs and refine makefile ([#62](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/62)) ([0011e7d](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/0011e7d1eed02c3f70256b5b19626e1f06d4f46c))
+* **deps:** bump github.com/gruntwork-io/terratest in /tests ([#56](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/56)) ([dbc5f53](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/dbc5f5308b90838334c530b986f3b0e892764417))
+
 ## [2.0.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v2.0.0...v2.0.1) (2024-09-25)
 
 
