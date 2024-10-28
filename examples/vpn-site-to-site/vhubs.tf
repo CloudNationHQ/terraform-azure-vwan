@@ -3,8 +3,8 @@ locals {
     weu = {
       location       = "westeurope"
       address_prefix = "10.0.0.0/23"
-      vpn_gateway = {
-        name = "weu-vpn-gateway"
+      site_to_site_vpn = {
+        name = "weu-s2s-gateway"
         vpn_sites = {
           site1 = {
             address_prefix = "192.168.1.0/24"

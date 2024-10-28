@@ -19,7 +19,7 @@ module "rg" {
 
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
   vwan = {
     name                           = module.naming.virtual_wan.name
