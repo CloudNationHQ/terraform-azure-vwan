@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v3.0.0...v3.1.0) (2024-10-28)
+
+
+### Features
+
+* add virtual hub security partner provider support ([#66](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/66)) ([dc0dcb6](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/dc0dcb6890140d59153598ba7a23cc03a3f4b5a8))
+* add vpn gateway nat rules support ([#68](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/68)) ([270b549](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/270b549f03103f3aef5647d9a7bcae93b6650cd1))
+
 ## [3.0.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v2.1.0...v3.0.0) (2024-10-28)
 
 
