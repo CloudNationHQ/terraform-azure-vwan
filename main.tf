@@ -196,3 +196,20 @@ resource "azurerm_vpn_gateway_connection" "vpn_connection" {
     remote_address_ranges = try(each.value.remote_address_ranges, [])
   }
 }
+
+# security partner provider
+resource "azurerm_virtual_hub_security_partner_provider" "spp" {
+  for_each = {
+    for k, v in lookup(var.vwan, "vhubs", {}) : k => v
+    if lookup(v, "security_partner_provider", null) != null
+  }
+
+  name                   = each.value.security_partner_provider.name
+  resource_group_name    = coalesce(lookup(var.vwan, "resource_group", null), var.resource_group)
+  location               = coalesce(lookup(each.value, "location", null), var.location)
+  virtual_hub_id         = azurerm_virtual_hub.vhub[each.key].id
+  security_provider_name = each.value.security_partner_provider.security_provider_name
+  tags                   = try(each.value.tags, var.tags)
+
+  depends_on = [azurerm_vpn_gateway.vpn_gateway]
+}
