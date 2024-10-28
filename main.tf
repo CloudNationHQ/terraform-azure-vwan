@@ -26,17 +26,90 @@ resource "azurerm_virtual_hub" "vhub" {
   tags                   = try(each.value.tags, var.tags)
 }
 
-# vpn gateway
+# point to site vpn server configuration
+resource "azurerm_vpn_server_configuration" "p2s_config" {
+  for_each = {
+    for k, v in lookup(var.vwan, "vhubs", {}) : k => v
+    if lookup(v, "point_to_site_vpn", null) != null
+  }
+
+  name                     = try(each.value.point_to_site_vpn.vpn_server_configuration_name, "p2s-vpn-config-${each.key}")
+  resource_group_name      = coalesce(lookup(var.vwan, "resource_group", null), var.resource_group)
+  location                 = coalesce(lookup(each.value, "location", null), var.location)
+  vpn_authentication_types = try(each.value.point_to_site_vpn.authentication_types, ["Certificate"])
+  vpn_protocols            = try(each.value.point_to_site_vpn.protocols, ["IkeV2"])
+
+  dynamic "client_root_certificate" {
+    for_each = try(
+      each.value.point_to_site_vpn.client_root_certificates, {}
+    )
+
+    content {
+      name             = client_root_certificate.key
+      public_cert_data = client_root_certificate.value.public_cert_data
+    }
+  }
+
+  dynamic "client_revoked_certificate" {
+    for_each = try(
+      each.value.point_to_site_vpn.client_revoked_certificates, {}
+    )
+
+    content {
+      name       = client_revoked_certificate.key
+      thumbprint = client_revoked_certificate.value.thumbprint
+    }
+  }
+
+  dynamic "azure_active_directory_authentication" {
+    for_each = try(each.value.point_to_site_vpn.azure_active_directory, null) != null ? ["enabled"] : []
+
+    content {
+      audience = each.value.point_to_site_vpn.azure_active_directory.audience
+      issuer   = each.value.point_to_site_vpn.azure_active_directory.issuer
+      tenant   = each.value.point_to_site_vpn.azure_active_directory.tenant
+    }
+  }
+}
+
+# point to site vpn gateway
+resource "azurerm_point_to_site_vpn_gateway" "p2s_gateway" {
+  for_each = {
+    for k, v in lookup(var.vwan, "vhubs", {}) : k => v
+    if lookup(v, "point_to_site_vpn", null) != null
+  }
+
+  name                                = try(each.value.name, join("-", [var.naming.point_to_site_vpn_gateway, each.key]))
+  resource_group_name                 = coalesce(lookup(var.vwan, "resource_group", null), var.resource_group)
+  location                            = coalesce(lookup(each.value, "location", null), var.location)
+  virtual_hub_id                      = azurerm_virtual_hub.vhub[each.key].id
+  vpn_server_configuration_id         = azurerm_vpn_server_configuration.p2s_config[each.key].id
+  scale_unit                          = try(each.value.point_to_site_vpn.scale_unit, 1)
+  routing_preference_internet_enabled = try(each.value.point_to_site_vpn.routing_preference_internet_enabled, false)
+  dns_servers                         = try(each.value.point_to_site_vpn.dns_servers, [])
+  tags                                = try(each.value.tags, var.tags)
+
+  connection_configuration {
+    name                      = try(each.value.point_to_site_vpn.connection_configuration_name, "p2s-connection-${each.key}")
+    internet_security_enabled = try(each.value.point_to_site_vpn.internet_security_enabled, false)
+
+    vpn_client_address_pool {
+      address_prefixes = each.value.point_to_site_vpn.vpn_client_configuration.address_pool
+    }
+  }
+}
+
+# site to site vpn gatewayP
 resource "azurerm_vpn_gateway" "vpn_gateway" {
   for_each = {
     for k, v in lookup(var.vwan, "vhubs", {}) : k => v
-    if lookup(v, "vpn_gateway", null) != null
+    if lookup(v, "site_to_site_vpn", null) != null
   }
-  name                = lookup(each.value.vpn_gateway, "name", null)
+  name                = lookup(each.value.site_to_site_vpn, "name", null)
   resource_group_name = coalesce(lookup(var.vwan, "resource_group", null), var.resource_group)
   location            = coalesce(lookup(each.value, "location", null), var.location)
   virtual_hub_id      = azurerm_virtual_hub.vhub[each.key].id
-  routing_preference  = lookup(each.value.vpn_gateway, "routing_preference", null)
+  routing_preference  = lookup(each.value.site_to_site_vpn, "routing_preference", null)
   tags                = try(var.vwan.tags, var.tags)
 }
 
@@ -44,7 +117,7 @@ resource "azurerm_vpn_gateway" "vpn_gateway" {
 resource "azurerm_vpn_site" "vpn_site" {
   for_each = merge(flatten([
     for vhub_key, vhub in lookup(var.vwan, "vhubs", {}) : [
-      for site_key, site in lookup(lookup(vhub, "vpn_gateway", {}), "vpn_sites", {}) : {
+      for site_key, site in lookup(lookup(vhub, "site_to_site_vpn", {}), "vpn_sites", {}) : {
         "${vhub_key}-${site_key}" = merge(site, {
           vhub_key      = vhub_key
           site_key      = site_key
@@ -79,7 +152,7 @@ resource "azurerm_vpn_site" "vpn_site" {
 resource "azurerm_vpn_gateway_connection" "vpn_connection" {
   for_each = merge(flatten([
     for vhub_key, vhub in lookup(var.vwan, "vhubs", {}) : [
-      for site_key, site in lookup(lookup(vhub, "vpn_gateway", {}), "vpn_sites", {}) : [
+      for site_key, site in lookup(lookup(vhub, "site_to_site_vpn", {}), "vpn_sites", {}) : [
         for conn_key, conn in lookup(site, "connections", {}) : {
           "${vhub_key}-${site_key}-${conn_key}" = merge(conn, {
             vhub_key = vhub_key

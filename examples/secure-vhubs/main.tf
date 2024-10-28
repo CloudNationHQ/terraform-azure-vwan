@@ -19,7 +19,7 @@ module "rg" {
 
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
   naming         = local.naming
   location       = module.rg.groups.demo.location
