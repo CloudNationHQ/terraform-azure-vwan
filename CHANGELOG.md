@@ -5,11 +5,18 @@
 
 ### ⚠ BREAKING CHANGES
 
-* add point to site vpn support ([#64](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/64))
+* the data structure has been updated to reflect changes in vpn functionality
 
 ### Features
 
 * add point to site vpn support ([#64](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/64)) ([88190e6](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/88190e611a1870672c5f678a6693c5a802f31dd6))
+
+### Upgrade from v2.1.0 to v3.0.0:
+
+- Update module reference to: `version = "~> 3.0"`
+- Rename properties in vwan object:
+  - within virtual hubs, vpn_gateway has been renamed to site_to_site_vpn to accommodate the option of utilizing point_to_site_vpn as well
+
 
 ## [2.1.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v2.0.1...v2.1.0) (2024-10-11)
 
