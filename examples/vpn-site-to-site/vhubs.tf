@@ -5,6 +5,34 @@ locals {
       address_prefix = "10.0.0.0/23"
       site_to_site_vpn = {
         name = "weu-s2s-gateway"
+        nat_rules = {
+          rule1 = {
+            external_mappings = {
+              mapping1 = {
+                address_space = "192.168.21.0/26"
+              }
+            }
+            internal_mappings = {
+              mapping1 = {
+                address_space = "10.4.0.0/26"
+              }
+            }
+          }
+          rule2 = {
+            external_mappings = {
+              mapping1 = {
+                address_space = "192.168.22.0/26"
+                port_range    = "10000-20000"
+              }
+            }
+            internal_mappings = {
+              mapping1 = {
+                address_space = "10.5.0.0/26"
+                port_range    = "10000-20000"
+              }
+            }
+          }
+        }
         vpn_sites = {
           site1 = {
             address_prefix = "192.168.1.0/24"

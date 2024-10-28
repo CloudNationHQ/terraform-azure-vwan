@@ -32,6 +32,7 @@ End-to-end testing is not conducted on these modules, as they are individual com
 - ability to configure multiple vpn gateway connections on sites
 - site to site vpn capabilities for secure connectivity between networks
 - point to site vpn support for secure client access to virtual hub
+- nat rules support for address translation on vpn gateways
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -57,6 +58,7 @@ End-to-end testing is not conducted on these modules, as they are individual com
 | [azurerm_virtual_wan.vwan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_wan) | resource |
 | [azurerm_vpn_gateway.vpn_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_gateway) | resource |
 | [azurerm_vpn_gateway_connection.vpn_connection](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_gateway_connection) | resource |
+| [azurerm_vpn_gateway_nat_rule.nat_rule](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_gateway_nat_rule) | resource |
 | [azurerm_vpn_server_configuration.p2s_config](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_server_configuration) | resource |
 | [azurerm_vpn_site.vpn_site](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_site) | resource |
 

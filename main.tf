@@ -197,6 +197,41 @@ resource "azurerm_vpn_gateway_connection" "vpn_connection" {
   }
 }
 
+# vpn gateway nat rules
+resource "azurerm_vpn_gateway_nat_rule" "nat_rule" {
+  for_each = merge(flatten([
+    for vhub_key, vhub in lookup(var.vwan, "vhubs", {}) : [
+      for rule_key, rule in lookup(lookup(vhub, "site_to_site_vpn", {}), "nat_rules", {}) : {
+        "${vhub_key}-${rule_key}" = merge(rule, {
+          vhub_key = vhub_key
+          rule_key = rule_key
+        })
+      }
+    ]
+  ])...)
+
+  name                = coalesce(lookup(each.value, "name", null), each.value.rule_key)
+  vpn_gateway_id      = azurerm_vpn_gateway.vpn_gateway[each.value.vhub_key].id
+  ip_configuration_id = try(each.value.ip_configuration_id, null)
+  mode                = try(each.value.mode, "EgressSnat")
+
+  dynamic "external_mapping" {
+    for_each = try(each.value.external_mappings, {})
+    content {
+      address_space = external_mapping.value.address_space
+      port_range    = try(external_mapping.value.port_range, null)
+    }
+  }
+
+  dynamic "internal_mapping" {
+    for_each = try(each.value.internal_mappings, {})
+    content {
+      address_space = internal_mapping.value.address_space
+      port_range    = try(internal_mapping.value.port_range, null)
+    }
+  }
+}
+
 # security partner provider
 resource "azurerm_virtual_hub_security_partner_provider" "spp" {
   for_each = {
