@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v3.1.0...v3.2.0) (2024-10-31)
+
+
+### Features
+
+* add express route gateway support ([#69](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/69)) ([4c3ebaf](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/4c3ebaf10ca7ccdd6ff1e7998a4d214aa4e16b95))
+
 ## [3.1.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v3.0.0...v3.1.0) (2024-10-28)
 
 
