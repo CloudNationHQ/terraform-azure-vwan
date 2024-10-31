@@ -30,7 +30,9 @@ resource "azurerm_virtual_hub" "vhub" {
 resource "azurerm_vpn_server_configuration" "p2s_config" {
   for_each = {
     for k, v in lookup(var.vwan, "vhubs", {}) : k => v
-    if lookup(v, "point_to_site_vpn", null) != null
+    if lookup(
+      v, "point_to_site_vpn", null
+    ) != null
   }
 
   name                     = try(each.value.point_to_site_vpn.vpn_server_configuration_name, "p2s-vpn-config-${each.key}")
@@ -76,7 +78,9 @@ resource "azurerm_vpn_server_configuration" "p2s_config" {
 resource "azurerm_point_to_site_vpn_gateway" "p2s_gateway" {
   for_each = {
     for k, v in lookup(var.vwan, "vhubs", {}) : k => v
-    if lookup(v, "point_to_site_vpn", null) != null
+    if lookup(
+      v, "point_to_site_vpn", null
+    ) != null
   }
 
   name                                = try(each.value.name, join("-", [var.naming.point_to_site_vpn_gateway, each.key]))
@@ -103,7 +107,9 @@ resource "azurerm_point_to_site_vpn_gateway" "p2s_gateway" {
 resource "azurerm_vpn_gateway" "vpn_gateway" {
   for_each = {
     for k, v in lookup(var.vwan, "vhubs", {}) : k => v
-    if lookup(v, "site_to_site_vpn", null) != null
+    if lookup(
+      v, "site_to_site_vpn", null
+    ) != null
   }
   name                = lookup(each.value.site_to_site_vpn, "name", null)
   resource_group_name = coalesce(lookup(var.vwan, "resource_group", null), var.resource_group)
@@ -232,11 +238,31 @@ resource "azurerm_vpn_gateway_nat_rule" "nat_rule" {
   }
 }
 
+# express route gateway
+resource "azurerm_express_route_gateway" "er_gateway" {
+  for_each = {
+    for k, v in lookup(var.vwan, "vhubs", {}) : k => v
+    if lookup(
+      v, "express_route_gateway", null
+    ) != null
+  }
+
+  name                          = try(each.value.express_route_gateway.name, join("-", [var.naming.express_route_gateway, each.key]))
+  resource_group_name           = coalesce(lookup(var.vwan, "resource_group", null), var.resource_group)
+  location                      = coalesce(lookup(each.value, "location", null), var.location)
+  virtual_hub_id                = azurerm_virtual_hub.vhub[each.key].id
+  scale_units                   = each.value.express_route_gateway.scale_units
+  allow_non_virtual_wan_traffic = try(each.value.express_route_gateway.allow_non_virtual_wan_traffic, false)
+  tags                          = try(each.value.tags, var.tags)
+}
+
 # security partner provider
 resource "azurerm_virtual_hub_security_partner_provider" "spp" {
   for_each = {
     for k, v in lookup(var.vwan, "vhubs", {}) : k => v
-    if lookup(v, "security_partner_provider", null) != null
+    if lookup(
+      v, "security_partner_provider", null
+    ) != null
   }
 
   name                   = each.value.security_partner_provider.name
