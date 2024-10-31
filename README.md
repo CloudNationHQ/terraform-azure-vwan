@@ -33,6 +33,7 @@ End-to-end testing is not conducted on these modules, as they are individual com
 - site to site vpn capabilities for secure connectivity between networks
 - point to site vpn support for secure client access to virtual hub
 - nat rules support for address translation on vpn gateways
+- expressroute gateway enablement on virtual hubs for hybrid connectivity
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -52,6 +53,7 @@ End-to-end testing is not conducted on these modules, as they are individual com
 
 | Name | Type |
 |------|------|
+| [azurerm_express_route_gateway.er_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/express_route_gateway) | resource |
 | [azurerm_point_to_site_vpn_gateway.p2s_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/point_to_site_vpn_gateway) | resource |
 | [azurerm_virtual_hub.vhub](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_hub) | resource |
 | [azurerm_virtual_hub_security_partner_provider.spp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_hub_security_partner_provider) | resource |
