@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v3.2.0...v3.3.0) (2024-11-11)
+
+
+### Features
+
+* enhance testing with sequential, parallel modes and flags for exceptions and skip-destroy ([#71](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/71)) ([4a5463e](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/4a5463e54d67ad93f1f37267a6544c9c64f3cafd))
+
 ## [3.2.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v3.1.0...v3.2.0) (2024-10-31)
 
 
