@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v3.3.0...v3.4.0) (2024-11-13)
+
+
+### Features
+
+* add vhub-connection submodule including example ([#73](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/73)) ([dc40769](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/dc40769d583f3cd8c9f79237b01e04e9036cced5))
+
 ## [3.3.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v3.2.0...v3.3.0) (2024-11-11)
 
 
