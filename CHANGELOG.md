@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v3.4.0...v3.4.1) (2024-11-13)
+
+
+### Bug Fixes
+
+* fix submodule documentation generation ([#75](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/75)) ([186c8ab](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/186c8ab0d2b6083af6922372e8811cc8e7b5b81a))
+
 ## [3.4.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v3.3.0...v3.4.0) (2024-11-13)
 
 
