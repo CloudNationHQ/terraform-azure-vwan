@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.5.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v3.4.1...v3.5.0) (2025-01-20)
+
+
+### Features
+
+* **deps:** bump github.com/gruntwork-io/terratest in /tests ([#78](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/78)) ([f78dbde](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/f78dbdea92b63a93ec4d7609bcb357f62caa7b8e))
+* **deps:** bump golang.org/x/net from 0.31.0 to 0.33.0 in /tests ([#82](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/82)) ([ea740a8](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/ea740a8e9c3ea74bdaa10a365fd9d60a3f602ec4))
+* remove temporary files when deployment tests fails ([#80](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/80)) ([e0a872a](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/e0a872a1648c05f514464b82bbde804cf503d62b))
+
 ## [3.4.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v3.4.0...v3.4.1) (2024-11-13)
 
 
