@@ -1,6 +1,6 @@
 module "naming" {
   source  = "cloudnationhq/naming/azure"
-  version = "~> 0.1"
+  version = "~> 0.23"
 
   suffix = ["demo", "dev"]
 }
@@ -19,7 +19,7 @@ module "rg" {
 
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   vwan = {
     name                           = module.naming.virtual_wan.name

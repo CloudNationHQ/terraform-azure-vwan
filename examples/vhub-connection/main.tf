@@ -1,6 +1,6 @@
 module "naming" {
   source  = "cloudnationhq/naming/azure"
-  version = "~> 0.1"
+  version = "~> 0.23"
 
   suffix = ["demo", "dev"]
 }
@@ -11,7 +11,7 @@ module "rg" {
 
   groups = {
     demo = {
-      name     = module.naming.resource_group.name
+      name     = module.naming.resource_group.name_unique
       location = "westeurope"
     }
   }
@@ -57,7 +57,7 @@ module "rg_vwan" {
 
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   providers = {
     azurerm = azurerm.connectivity
@@ -82,22 +82,25 @@ module "vwan" {
   }
 }
 
-
 module "vhub-connection" {
   source  = "cloudnationhq/vwan/azure//modules/vhub-connection"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   providers = {
     azurerm = azurerm.connectivity
   }
 
   virtual_hub = {
-    vwan_name      = module.vwan.vhubs.weu.name
     resource_group = module.vwan.vwan.resource_group_name
-    name           = module.naming.virtual_hub_connection.name
-    vnet_id        = module.network.vnet.id
+    name           = module.vwan.vhubs.weu.name
 
+    connections = {
+      prod = {
+        name                      = "vhcon-demo-prod-weu"
+        remote_virtual_network_id = module.network.vnet.id
+        internet_security_enabled = false
+      }
+    }
   }
-
   depends_on = [module.vwan]
 }

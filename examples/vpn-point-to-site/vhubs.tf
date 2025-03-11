@@ -45,6 +45,29 @@ EOF
           }
         }
 
+        radius = {
+          server = [
+            {
+              address = "10.0.0.10"
+              secret  = "radiusSecret123!"
+              score   = 10
+            },
+            {
+              address = "10.0.0.11"
+              secret  = "backupRadiusSecret456!"
+              score   = 5
+            }
+          ],
+          client_root_certificate = {
+            name       = "RADIUS-Client-Root"
+            thumbprint = "0987654321ABCDEF0987654321ABCDEF09876543"
+          },
+          server_root_certificate = {
+            name             = "RADIUS-Server-Root"
+            public_cert_data = "MIID4jCCAsqgAwIBAgIQByXhXOLV..."
+          }
+        }
+
         vpn_client_configuration = {
           address_pool = ["172.16.0.0/24", "192.168.0.0/24"]
           dns_servers  = ["10.0.0.4", "10.0.0.5"]
