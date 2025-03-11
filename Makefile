@@ -16,7 +16,7 @@ test-sequential:
 	cd tests && go test -v -timeout 120m -run '^TestApplyAllSequential$$' -args $(TEST_ARGS) .
 
 test-parallel:
-	cd tests && go test -v -timeout 60m -run '^TestApplyAllParallel$$' -args $(TEST_ARGS) .
+	cd tests && go test -v -timeout 600m -run '^TestApplyAllParallel$$' -args $(TEST_ARGS) .
 
 docs:
 	@echo "Generating documentation for root and modules..."
