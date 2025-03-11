@@ -286,7 +286,7 @@ resource "azurerm_vpn_site" "vpn_site" {
     for_each = lookup(each.value, "vpn_links", { "link1" = {} })
 
     content {
-      name          = link.key # fallback to name
+      name          = try(link.value.name, link.key)
       ip_address    = try(link.value.ip_address, each.value.gateway_ip)
       provider_name = try(link.value.provider_name, null)
       speed_in_mbps = try(link.value.speed_in_mbps, null)
@@ -329,8 +329,15 @@ resource "azurerm_vpn_gateway_connection" "vpn_connection" {
     for_each = lookup(each.value, "vpn_links", {})
 
     content {
-      name                                  = vpn_link.key
-      vpn_site_link_id                      = one([for link in azurerm_vpn_site.vpn_site["${each.value.vhub_key}-${each.value.site_key}"].link : link.id if link.name == vpn_link.key])
+      name = vpn_link.key
+      vpn_site_link_id = one([
+        for link in azurerm_vpn_site.vpn_site["${each.value.vhub_key}-${each.value.site_key}"].link :
+        link.id if link.name == (
+          can(var.vwan.vhubs[each.value.vhub_key].site_to_site_vpn.vpn_sites[each.value.site_key].vpn_links[vpn_link.key].name) ?
+          var.vwan.vhubs[each.value.vhub_key].site_to_site_vpn.vpn_sites[each.value.site_key].vpn_links[vpn_link.key].name :
+          vpn_link.key
+        )
+      ])
       bgp_enabled                           = try(vpn_link.value.bgp_enabled, false)
       protocol                              = try(vpn_link.value.protocol, "IKEv2")
       shared_key                            = vpn_link.value.shared_key
