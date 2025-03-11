@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v3.5.0...v4.0.0) (2025-03-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* They key in vpn site links has changed. This change will cause a recreate on existing resources. Also the vhub connection submodule now supports multiple connections within a single configuration. This will also cause a recreate and change in the data structure. See the examples as a reference
+
+### Features
+
+* add missing properties and functionality ([#86](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/86)) ([9710ca6](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/9710ca63a12c14a886cbcedaaacff1fd8c393195))
+
 ## [3.5.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v3.4.1...v3.5.0) (2025-01-20)
 
 
