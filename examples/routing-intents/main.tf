@@ -19,7 +19,7 @@ module "rg" {
 
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   naming = local.naming
 
@@ -34,8 +34,8 @@ module "vwan" {
 }
 
 module "routing_intents" {
-  source  = "cloudnationhq/vwan/azure//modules/route-intent"
-  version = "~> 3.0"
+  source  = "cloudnationhq/vwan/azure//modules/routing-intent"
+  version = "~> 4.0"
 
   resource_group = module.rg.groups.demo.name
 
