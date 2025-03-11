@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.1.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v4.0.0...v4.1.0) (2025-03-11)
+
+
+### Features
+
+* **deps:** bump github.com/gruntwork-io/terratest in /tests ([#85](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/85)) ([37cd714](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/37cd714cdf667aca1c039ec86a851eff16e070c3))
+
+
+### Bug Fixes
+
+* fix typo routing intent module reference ([#88](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/88)) ([1d08b5d](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/1d08b5de0f51040efb061252b99849634f5d5254))
+
 ## [4.0.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v3.5.0...v4.0.0) (2025-03-11)
 
 
