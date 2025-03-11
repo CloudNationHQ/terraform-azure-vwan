@@ -34,7 +34,7 @@ module "vwan" {
 }
 
 module "routing_intents" {
-  source  = "cloudnationhq/vwan/azure//modules/route-intent"
+  source  = "cloudnationhq/vwan/azure//modules/routing-intent"
   version = "~> 4.0"
 
   resource_group = module.rg.groups.demo.name
