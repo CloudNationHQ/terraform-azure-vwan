@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.2.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v4.1.0...v4.2.0) (2025-04-14)
+
+
+### Features
+
+* add type definitions ([#94](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/94)) ([ccd49de](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/ccd49de9b6ac42696b34bd0573e7760001007e2b))
+* **deps:** bump golang.org/x/net from 0.34.0 to 0.36.0 in /tests ([#91](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/91)) ([ab70a0a](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/ab70a0a9eaf1e98ca78a4804ef22831ec62b7c86))
+
 ## [4.1.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v4.0.0...v4.1.0) (2025-03-11)
 
 
