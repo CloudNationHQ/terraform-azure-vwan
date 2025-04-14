@@ -2,85 +2,306 @@
 
 This terraform module streamlines the setup and management of virtual wan components on azure, offering customizable choices for wan topology, connectivity and security policies.
 
-## Goals
-
-The main objective is to create a more logic data structure, achieved by combining and grouping related resources together in a complex object.
-
-The structure of the module promotes reusability. It's intended to be a repeatable component, simplifying the process of building diverse workloads and platform accelerators consistently.
-
-A primary goal is to utilize keys and values in the object that correspond to the REST API's structure. This enables us to carry out iterations, increasing its practical value as time goes on.
-
-A last key goal is to separate logic from configuration in the module, thereby enhancing its scalability, ease of customization, and manageability.
-
-## Non-Goals
-
-These modules are not intended to be complete, ready-to-use solutions; they are designed as components for creating your own patterns.
-
-They are not tailored for a single use case but are meant to be versatile and applicable to a range of scenarios.
-
-Security standardization is applied at the pattern level, while the modules include default values based on best practices but do not enforce specific security standards.
-
-End-to-end testing is not conducted on these modules, as they are individual components and do not undergo the extensive testing reserved for complete patterns or solutions.
-
 ## Features
 
-- simplified virtual wan deployment
-- multiple secure virtual hub support
-- utilization of terratest for robust validation
-- ability to define and manage routing intents on virtual hubs
-- vpn gateway support on virtual hubs with multi-site and link connectivity
-- ability to configure multiple vpn gateway connections on sites
-- site to site vpn capabilities for secure connectivity between networks
-- point to site vpn support for secure client access to virtual hub
-- nat rules support for address translation on vpn gateways
-- expressroute gateway enablement on virtual hubs for hybrid connectivity
+Simplified virtual wan deployment
+
+Multiple secure virtual hub support
+
+Utilization of terratest for robust validation
+
+Ability to define and manage routing intents on virtual hubs
+
+Vpn gateway support on virtual hubs with multi-site and link connectivity
+
+Ability to configure multiple vpn gateway connections on sites
+
+Site to site vpn capabilities for secure connectivity between networks
+
+Point to site vpn support for secure client access to virtual hub
+
+Nat rules support for address translation on vpn gateways
+
+Expressroute gateway enablement on virtual hubs for hybrid connectivity
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
+The following requirements are needed by this module:
+
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.0)
+
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 4.0)
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 4.0 |
+The following providers are used by this module:
+
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 4.0)
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| [azurerm_express_route_gateway.er_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/express_route_gateway) | resource |
-| [azurerm_point_to_site_vpn_gateway.p2s_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/point_to_site_vpn_gateway) | resource |
-| [azurerm_virtual_hub.vhub](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_hub) | resource |
-| [azurerm_virtual_hub_security_partner_provider.spp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_hub_security_partner_provider) | resource |
-| [azurerm_virtual_wan.vwan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_wan) | resource |
-| [azurerm_vpn_gateway.vpn_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_gateway) | resource |
-| [azurerm_vpn_gateway_connection.vpn_connection](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_gateway_connection) | resource |
-| [azurerm_vpn_gateway_nat_rule.nat_rule](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_gateway_nat_rule) | resource |
-| [azurerm_vpn_server_configuration.p2s_config](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_server_configuration) | resource |
-| [azurerm_vpn_site.vpn_site](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_site) | resource |
+The following resources are used by this module:
 
-## Inputs
+- [azurerm_express_route_gateway.er_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/express_route_gateway) (resource)
+- [azurerm_point_to_site_vpn_gateway.p2s_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/point_to_site_vpn_gateway) (resource)
+- [azurerm_virtual_hub.vhub](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_hub) (resource)
+- [azurerm_virtual_hub_security_partner_provider.spp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_hub_security_partner_provider) (resource)
+- [azurerm_virtual_wan.vwan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_wan) (resource)
+- [azurerm_vpn_gateway.vpn_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_gateway) (resource)
+- [azurerm_vpn_gateway_connection.vpn_connection](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_gateway_connection) (resource)
+- [azurerm_vpn_gateway_nat_rule.nat_rule](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_gateway_nat_rule) (resource)
+- [azurerm_vpn_server_configuration.p2s_config](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_server_configuration) (resource)
+- [azurerm_vpn_site.vpn_site](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_site) (resource)
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_location"></a> [location](#input\_location) | default azure region and can be used if location is not specified inside the object. | `string` | `null` | no |
-| <a name="input_naming"></a> [naming](#input\_naming) | contains naming convention | `map(string)` | `null` | no |
-| <a name="input_resource_group"></a> [resource\_group](#input\_resource\_group) | default resource group and can be used if resourcegroup is not specified inside the object. | `string` | `null` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | default tags to be used. | `map(string)` | `{}` | no |
-| <a name="input_vwan"></a> [vwan](#input\_vwan) | describes virtual wan configuration | `any` | n/a | yes |
+## Required Inputs
+
+The following input variables are required:
+
+### <a name="input_vwan"></a> [vwan](#input\_vwan)
+
+Description: Contains all virtual wan configuration
+
+Type:
+
+```hcl
+object({
+    name                              = string
+    resource_group                    = optional(string, null)
+    location                          = optional(string, null)
+    allow_branch_to_branch_traffic    = optional(bool, true)
+    disable_vpn_encryption            = optional(bool, false)
+    type                              = optional(string, "Standard")
+    office365_local_breakout_category = optional(string, "None")
+    tags                              = optional(map(string))
+    vhubs = optional(map(object({
+      name                                   = optional(string)
+      location                               = optional(string, null)
+      address_prefix                         = string
+      sku                                    = optional(string, "Standard")
+      hub_routing_preference                 = optional(string, "ExpressRoute")
+      virtual_router_auto_scale_min_capacity = optional(number, 2)
+      tags                                   = optional(map(string))
+      routes = optional(map(object({
+        address_prefixes    = list(string)
+        next_hop_ip_address = string
+      })), {})
+      point_to_site_vpn = optional(object({
+        vpn_server_configuration_name       = optional(string)
+        authentication_types                = optional(list(string), ["Certificate"])
+        protocols                           = optional(list(string), ["IkeV2"])
+        scale_unit                          = optional(number, 1)
+        routing_preference_internet_enabled = optional(bool, false)
+        internet_security_enabled           = optional(bool, false)
+        dns_servers                         = optional(list(string), [])
+        connection_configuration_name       = optional(string)
+        ipsec_policy = optional(object({
+          dh_group               = string
+          pfs_group              = string
+          ike_integrity          = string
+          ike_encryption         = string
+          ipsec_integrity        = string
+          ipsec_encryption       = string
+          sa_lifetime_seconds    = number
+          sa_data_size_kilobytes = number
+        }))
+        radius = optional(object({
+          server = list(object({
+            address = string
+            secret  = string
+            score   = number
+          }))
+          client_root_certificate = optional(object({
+            name       = string
+            thumbprint = string
+          }))
+          server_root_certificate = optional(object({
+            name             = string
+            public_cert_data = string
+          }))
+        }))
+        client_root_certificates = optional(map(object({
+          name             = optional(string)
+          public_cert_data = string
+        })), {})
+        client_revoked_certificates = optional(map(object({
+          name       = optional(string)
+          thumbprint = string
+        })), {})
+        azure_active_directory = optional(object({
+          audience = string
+          issuer   = string
+          tenant   = string
+        }))
+        vpn_client_configuration = object({
+          address_pool = list(string)
+        })
+        route = optional(object({
+          associated_route_table_id = string
+          inbound_route_map_id      = optional(string)
+          outbound_route_map_id     = optional(string)
+          propagated_route_table = optional(object({
+            ids    = list(string)
+            labels = optional(list(string), [])
+          }))
+        }))
+      }))
+      site_to_site_vpn = optional(object({
+        name                                  = string
+        routing_preference                    = optional(string, null)
+        bgp_route_translation_for_nat_enabled = optional(bool, false)
+        scale_unit                            = optional(number, 1)
+        bgp_settings = optional(object({
+          asn         = number
+          peer_weight = number
+          instance_0_bgp_peering_address = optional(object({
+            custom_ips = list(string)
+          }))
+          instance_1_bgp_peering_address = optional(object({
+            custom_ips = list(string)
+          }))
+        }))
+        vpn_sites = optional(map(object({
+          name           = optional(string)
+          address_prefix = string
+          gateway_ip     = string
+          device_vendor  = optional(string, "Microsoft")
+          device_model   = optional(string, "VpnSite")
+          o365_policy = optional(object({
+            traffic_category = optional(object({
+              allow_endpoint_enabled    = optional(bool, false)
+              default_endpoint_enabled  = optional(bool, false)
+              optimize_endpoint_enabled = optional(bool, false)
+            }))
+          }))
+          vpn_links = optional(map(object({
+            name          = optional(string)
+            ip_address    = optional(string, null)
+            provider_name = optional(string, null)
+            speed_in_mbps = optional(number, null)
+            fqdn          = optional(string, null)
+            bgp = optional(object({
+              peering_address = string
+              asn             = number
+            }))
+          })), { "link1" = {} })
+          connections = optional(map(object({
+            name                      = optional(string)
+            internet_security_enabled = optional(bool, false)
+            local_address_ranges      = optional(list(string), [])
+            remote_address_ranges     = optional(list(string), [])
+            inbound_route_map_id      = optional(string, null)
+            outbound_route_map_id     = optional(string, null)
+            vpn_links = map(object({
+              shared_key                            = string
+              bgp_enabled                           = optional(bool, false)
+              protocol                              = optional(string, "IKEv2")
+              ingress_nat_rule_ids                  = optional(list(string), [])
+              egress_nat_rule_ids                   = optional(list(string), [])
+              bandwidth_mbps                        = optional(number, 10)
+              connection_mode                       = optional(string, "Default")
+              local_azure_ip_address_enabled        = optional(bool, false)
+              policy_based_traffic_selector_enabled = optional(bool, false)
+              ratelimit_enabled                     = optional(bool, false)
+              route_weight                          = optional(number, 0)
+              vpn_site_link_id                      = optional(string)
+              custom_bgp_address = optional(map(object({
+                ip_address          = string
+                ip_configuration_id = string
+              })), {})
+              ipsec_policy = optional(map(object({
+                pfs_group                = string
+                dh_group                 = string
+                sa_data_size_kb          = number
+                sa_lifetime_sec          = number
+                integrity_algorithm      = string
+                encryption_algorithm     = string
+                ike_integrity_algorithm  = string
+                ike_encryption_algorithm = string
+              })), {})
+            }))
+          })), {})
+        })), {})
+        nat_rules = optional(map(object({
+          name                = optional(string)
+          ip_configuration_id = optional(string, null)
+          mode                = optional(string, "EgressSnat")
+          type                = optional(string, "Static")
+          external_mappings = map(object({
+            address_space = string
+            port_range    = optional(string, null)
+          }))
+          internal_mappings = map(object({
+            address_space = string
+            port_range    = optional(string, null)
+          }))
+        })), {})
+      }), null)
+      express_route_gateway = optional(object({
+        name                          = optional(string)
+        scale_units                   = number
+        allow_non_virtual_wan_traffic = optional(bool, false)
+      }))
+      security_partner_provider = optional(object({
+        name                   = string
+        security_provider_name = string
+      }))
+    })), {})
+  })
+```
+
+## Optional Inputs
+
+The following input variables are optional (have default values):
+
+### <a name="input_location"></a> [location](#input\_location)
+
+Description: default azure region and can be used if location is not specified inside the object.
+
+Type: `string`
+
+Default: `null`
+
+### <a name="input_naming"></a> [naming](#input\_naming)
+
+Description: contains naming convention
+
+Type: `map(string)`
+
+Default: `null`
+
+### <a name="input_resource_group"></a> [resource\_group](#input\_resource\_group)
+
+Description: default resource group and can be used if resourcegroup is not specified inside the object.
+
+Type: `string`
+
+Default: `null`
+
+### <a name="input_tags"></a> [tags](#input\_tags)
+
+Description: default tags to be used.
+
+Type: `map(string)`
+
+Default: `{}`
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_vhubs"></a> [vhubs](#output\_vhubs) | contains virtual hub configuration |
-| <a name="output_vwan"></a> [vwan](#output\_vwan) | contains virtual wan configuration |
+The following outputs are exported:
+
+### <a name="output_vhubs"></a> [vhubs](#output\_vhubs)
+
+Description: contains virtual hub configuration
+
+### <a name="output_vwan"></a> [vwan](#output\_vwan)
+
+Description: contains virtual wan configuration
 <!-- END_TF_DOCS -->
+
+## Goals
+
+For more information, please see our [goals and non-goals](./GOALS.md).
 
 ## Testing
 
@@ -94,15 +315,15 @@ Full examples detailing all usages, along with integrations with dependency modu
 
 To update the module's documentation run `make doc`
 
-## Authors
-
-Module is maintained by [these awesome contributors](https://github.com/cloudnationhq/terraform-azure-vwan/graphs/contributors).
-
-## Contributing
+## Contributors
 
 We welcome contributions from the community! Whether it's reporting a bug, suggesting a new feature, or submitting a pull request, your input is highly valued.
 
-For more information, please see our contribution [guidelines](./CONTRIBUTING.md).
+For more information, please see our contribution [guidelines](./CONTRIBUTING.md). <br><br>
+
+<a href="https://github.com/cloudnationhq/terraform-azure-vwan/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=cloudnationhq/terraform-azure-vwan" />
+</a>
 
 ## License
 

@@ -5,29 +5,45 @@ This submodule illustrates how to manage routing intents.
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
+The following requirements are needed by this module:
+
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.0)
+
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 4.0)
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 4.0 |
+The following providers are used by this module:
+
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 4.0)
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| [azurerm_virtual_hub_routing_intent.routing_intent](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_hub_routing_intent) | resource |
+The following resources are used by this module:
 
-## Inputs
+- [azurerm_virtual_hub_routing_intent.routing_intent](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_hub_routing_intent) (resource)
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_configs"></a> [configs](#input\_configs) | the configurations for the routing intents. | `any` | n/a | yes |
-| <a name="input_resource_group"></a> [resource\_group](#input\_resource\_group) | default resource group and can be used if resourcegroup is not specified inside the object. | `string` | `null` | no |
+## Required Inputs
+
+The following input variables are required:
+
+### <a name="input_configs"></a> [configs](#input\_configs)
+
+Description: the configurations for the routing intents.
+
+Type: `any`
+
+## Optional Inputs
+
+The following input variables are optional (have default values):
+
+### <a name="input_resource_group"></a> [resource\_group](#input\_resource\_group)
+
+Description: default resource group and can be used if resourcegroup is not specified inside the object.
+
+Type: `string`
+
+Default: `null`
 
 ## Outputs
 
