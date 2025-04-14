@@ -49,7 +49,7 @@ module "rg_vwan" {
 
   groups = {
     vwan = {
-      name     = module.naming.resource_group.name
+      name     = "${module.naming.resource_group.name_unique}1"
       location = "westeurope"
     }
   }

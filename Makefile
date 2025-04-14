@@ -20,11 +20,11 @@ test-parallel:
 
 docs:
 	@echo "Generating documentation for root and modules..."
-	terraform-docs markdown . --output-file README.md --output-mode inject --hide modules
+	terraform-docs markdown document . --output-file README.md --output-mode inject --hide modules
 	for dir in modules/*; do \
 		if [ -d "$$dir" ]; then \
 			echo "Processing $$dir..."; \
-			(cd "$$dir" && terraform-docs markdown . --output-file README.md --output-mode inject --hide modules) || echo "Skipped: $$dir"; \
+			(cd "$$dir" && terraform-docs markdown document . --output-file README.md --output-mode inject --hide modules) || echo "Skipped: $$dir"; \
 		fi \
 	done
 
