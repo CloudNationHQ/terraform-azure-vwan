@@ -164,7 +164,6 @@ object({
         vpn_sites = optional(map(object({
           name           = optional(string)
           address_prefix = string
-          gateway_ip     = string
           device_vendor  = optional(string, "Microsoft")
           device_model   = optional(string, "VpnSite")
           o365_policy = optional(object({
