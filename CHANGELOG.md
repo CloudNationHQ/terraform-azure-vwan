@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.4.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v4.3.0...v4.4.0) (2025-05-22)
+
+
+### Features
+
+* **deps:** bump github.com/gruntwork-io/terratest in /tests ([#101](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/101)) ([5dd1350](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/5dd13501b379d76e1e1010bb4210f0f5e3eb3b37))
+
 ## [4.3.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v4.2.0...v4.3.0) (2025-05-01)
 
 
