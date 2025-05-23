@@ -68,12 +68,12 @@ resource "azurerm_virtual_hub" "vhub" {
 }
 
 resource "azurerm_vpn_server_configuration" "p2s_config" {
-  for_each = {
+  for_each = nonsensitive({
     for k, v in lookup(var.vwan, "vhubs", {}) : k => v
     if lookup(
       v, "point_to_site_vpn", null
     ) != null
-  }
+  })
 
   resource_group_name = coalesce(
     lookup(
@@ -182,12 +182,12 @@ resource "azurerm_vpn_server_configuration" "p2s_config" {
 
 # point to site vpn gateway
 resource "azurerm_point_to_site_vpn_gateway" "p2s_gateway" {
-  for_each = {
+  for_each = nonsensitive({
     for k, v in lookup(var.vwan, "vhubs", {}) : k => v
     if lookup(
       v, "point_to_site_vpn", null
     ) != null
-  }
+  })
 
   resource_group_name = coalesce(
     lookup(var.vwan, "resource_group", null
@@ -248,12 +248,12 @@ resource "azurerm_point_to_site_vpn_gateway" "p2s_gateway" {
 
 # site to site vpn gatewayP
 resource "azurerm_vpn_gateway" "vpn_gateway" {
-  for_each = {
+  for_each = nonsensitive({
     for k, v in lookup(var.vwan, "vhubs", {}) : k => v
     if lookup(
       v, "site_to_site_vpn", null
     ) != null
-  }
+  })
 
   resource_group_name = coalesce(
     lookup(
@@ -307,17 +307,19 @@ resource "azurerm_vpn_gateway" "vpn_gateway" {
 
 # vpn sites
 resource "azurerm_vpn_site" "vpn_site" {
-  for_each = merge(flatten([
-    for vhub_key, vhub in lookup(var.vwan, "vhubs", {}) : [
-      for site_key, site in try(vhub.site_to_site_vpn.vpn_sites, {}) : {
+  for_each = nonsensitive(merge(flatten([
+    for vhub_key, vhub in lookup(var.vwan, "vhubs", {}) :
+    vhub.site_to_site_vpn != null ? [
+      for site_key, site in lookup(vhub.site_to_site_vpn, "vpn_sites", {}) : {
         "${vhub_key}-${site_key}" = merge(site, {
           vhub_key      = vhub_key
           site_key      = site_key
           vhub_location = lookup(vhub, "location", null)
         })
       }
-    ]
-  ])...)
+    ] : []
+  ])...))
+
 
   resource_group_name = coalesce(
     lookup(var.vwan, "resource_group", null
@@ -388,10 +390,11 @@ resource "azurerm_vpn_site" "vpn_site" {
 
 # vpn gateway connections
 resource "azurerm_vpn_gateway_connection" "vpn_connection" {
-  for_each = merge(flatten([
-    for vhub_key, vhub in lookup(var.vwan, "vhubs", {}) : [
-      for site_key, site in try(vhub.site_to_site_vpn.vpn_sites, {}) : [
-        for conn_key, conn in try(site.connections, {}) : {
+  for_each = nonsensitive(merge(flatten([
+    for vhub_key, vhub in lookup(var.vwan, "vhubs", {}) :
+    vhub.site_to_site_vpn != null ? [
+      for site_key, site in lookup(vhub.site_to_site_vpn, "vpn_sites", {}) : [
+        for conn_key, conn in lookup(site, "connections", {}) : {
           "${vhub_key}-${site_key}-${conn_key}" = merge(conn, {
             vhub_key = vhub_key
             site_key = site_key
@@ -399,8 +402,8 @@ resource "azurerm_vpn_gateway_connection" "vpn_connection" {
           })
         }
       ]
-    ]
-  ])...)
+    ] : []
+  ])...))
 
   name = coalesce(
     each.value.name,
@@ -533,12 +536,12 @@ resource "azurerm_vpn_gateway_nat_rule" "nat_rule" {
 
 # express route gateway
 resource "azurerm_express_route_gateway" "er_gateway" {
-  for_each = {
+  for_each = nonsensitive({
     for k, v in lookup(var.vwan, "vhubs", {}) : k => v
     if lookup(
       v, "express_route_gateway", null
     ) != null
-  }
+  })
 
   resource_group_name = coalesce(
     lookup(var.vwan, "resource_group", null
@@ -563,12 +566,12 @@ resource "azurerm_express_route_gateway" "er_gateway" {
 
 # security partner provider
 resource "azurerm_virtual_hub_security_partner_provider" "spp" {
-  for_each = {
+  for_each = nonsensitive({
     for k, v in lookup(var.vwan, "vhubs", {}) : k => v
     if lookup(
       v, "security_partner_provider", null
     ) != null
-  }
+  })
 
   resource_group_name = coalesce(
     lookup(var.vwan, "resource_group", null
