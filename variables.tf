@@ -12,7 +12,7 @@ variable "vwan" {
     vhubs = optional(map(object({
       name                                   = optional(string)
       location                               = optional(string, null)
-      address_prefix                         = string
+      address_prefix                         = list(string)
       sku                                    = optional(string, "Standard")
       hub_routing_preference                 = optional(string, "ExpressRoute")
       virtual_router_auto_scale_min_capacity = optional(number, 2)
