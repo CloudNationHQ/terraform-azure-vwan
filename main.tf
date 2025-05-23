@@ -338,7 +338,7 @@ resource "azurerm_vpn_site" "vpn_site" {
   )
 
   virtual_wan_id = azurerm_virtual_wan.vwan.id
-  address_cidrs  = [each.value.address_prefix]
+  address_cidrs  = each.value.address_prefix
   device_vendor  = each.value.device_vendor
   device_model   = each.value.device_model
 
