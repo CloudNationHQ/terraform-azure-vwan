@@ -100,7 +100,7 @@ variable "vwan" {
           name           = optional(string)
           address_prefix = string
           device_vendor  = optional(string, "Microsoft")
-          device_model   = optional(string, "VpnSite")
+          device_model   = optional(string)
           o365_policy = optional(object({
             traffic_category = optional(object({
               allow_endpoint_enabled    = optional(bool, false)
