@@ -12,7 +12,7 @@ variable "vwan" {
     vhubs = optional(map(object({
       name                                   = optional(string)
       location                               = optional(string, null)
-      address_prefix                         = list(string)
+      address_prefix                         = string
       sku                                    = optional(string, "Standard")
       hub_routing_preference                 = optional(string, "ExpressRoute")
       virtual_router_auto_scale_min_capacity = optional(number, 2)
@@ -98,7 +98,7 @@ variable "vwan" {
         }))
         vpn_sites = optional(map(object({
           name           = optional(string)
-          address_prefix = string
+          address_prefix = list(string)
           device_vendor  = optional(string, "Microsoft")
           device_model   = optional(string)
           o365_policy = optional(object({
