@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.4.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v4.4.0...v4.4.1) (2025-05-23)
+
+
+### Bug Fixes
+
+* issue with sensitive key lookup ([#104](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/104)) ([e66b3c2](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/e66b3c23a0399361119a846715e1eb90fe6ecd69))
+
 ## [4.4.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v4.3.0...v4.4.0) (2025-05-22)
 
 
