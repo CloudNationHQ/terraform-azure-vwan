@@ -420,7 +420,7 @@ resource "azurerm_vpn_gateway_connection" "vpn_connection" {
     )
 
     content {
-      name = coalesce(vpn_link.value.name, vpn_link.key)
+      name = try(each.value.vpn_links[vpn_link.key].name, vpn_link.key)
       vpn_site_link_id = one([
         for link in azurerm_vpn_site.vpn_site["${each.value.vhub_key}-${each.value.site_key}"].link :
         link.id if link.name == (
