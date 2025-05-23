@@ -470,20 +470,34 @@ resource "azurerm_vpn_gateway_connection" "vpn_connection" {
     }
   }
 
-  routing {
-    associated_route_table = azurerm_virtual_hub.vhub[each.value.vhub_key].default_route_table_id
-    inbound_route_map_id   = each.value.inbound_route_map_id
-    outbound_route_map_id  = each.value.outbound_route_map_id
+  dynamic "routing" {
+    for_each = try(each.value.routing, null) != null ? [each.value.routing] : []
 
-    propagated_route_table {
-      route_table_ids = [azurerm_virtual_hub.vhub[each.value.vhub_key].default_route_table_id]
-      labels          = ["default"]
+    content {
+      associated_route_table = try(each.value.routing.associated_route_table, azurerm_virtual_hub.vhub[each.value.vhub_key].default_route_table_id)
+      inbound_route_map_id   = each.value.inbound_route_map_id
+      outbound_route_map_id  = each.value.outbound_route_map_id
+
+      dynamic "propagated_route_table" {
+        for_each = try(routing.value.propagated_route_table, null) != null ? [routing.value.propagated_route_table] : []
+
+        content {
+          route_table_ids = try([
+            for name in each.value.routing.propagated_route_table.route_table_names :
+          replace(azurerm_virtual_hub.vhub[each.value.vhub_key].default_route_table_id, "[^/]+$", name)], [azurerm_virtual_hub.vhub[each.value.vhub_key].default_route_table_id])
+          labels = each.value.routing.propagated_route_table.labels
+        }
+      }
     }
   }
 
-  traffic_selector_policy {
-    local_address_ranges  = each.value.local_address_ranges
-    remote_address_ranges = each.value.remote_address_ranges
+  dynamic "traffic_selector_policy" {
+    for_each = lookup(each.value, "traffic_selector_policy", {})
+
+    content {
+      local_address_ranges  = each.value.local_address_ranges
+      remote_address_ranges = each.value.remote_address_ranges
+    }
   }
 }
 

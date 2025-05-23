@@ -170,6 +170,19 @@ variable "vwan" {
             port_range    = optional(string, null)
           }))
         })), {})
+        routing = optional(object({
+          associated_route_table = optional(string)
+          inbound_route_map_id   = optional(string)
+          outbound_route_map_id  = optional(string)
+          propagated_route_table = optional(object({
+            route_table_ids = optional(list(string))
+            labels          = optional(list(string), [])
+          }))
+        }))
+        traffic_selector_policy = optional(map(object({
+          local_address_ranges  = string
+          remote_address_ranges = string
+        })))
       }), null)
       express_route_gateway = optional(object({
         name                          = optional(string)
