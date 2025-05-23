@@ -57,14 +57,13 @@ locals {
             }
             connections = {
               connection1 = {
-                shared_key            = "YourSharedKey1"
                 connection_type       = "IPsec"
                 routing_weight        = 10
                 local_address_ranges  = ["10.0.0.0/16"]
                 remote_address_ranges = ["192.168.1.0/24"]
                 vpn_links = {
                   link1 = {
-                    shared_key  = "YourLinkSharedKey1"
+                    shared_key  = module.kv.secrets.psk.value
                     bgp_enabled = false
                     protocol    = "IKEv2"
                   }
