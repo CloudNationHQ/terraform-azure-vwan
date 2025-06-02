@@ -21,6 +21,17 @@ variable "vwan" {
         address_prefixes    = list(string)
         next_hop_ip_address = string
       })), {})
+      hub_route_table = optional(object({
+        name   = optional(string)
+        labels = optional(set(string))
+        routes = optional(list(object({
+          name              = string
+          destinations_type = string
+          destinations      = list(string)
+          next_hop          = string
+          next_hop_type     = optional(string)
+        })), [])
+      }))
       point_to_site_vpn = optional(object({
         vpn_server_configuration_name       = optional(string)
         authentication_types                = optional(list(string), ["Certificate"])
