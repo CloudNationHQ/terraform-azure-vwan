@@ -24,6 +24,8 @@ Nat rules support for address translation on vpn gateways
 
 Expressroute gateway enablement on virtual hubs for hybrid connectivity
 
+Custom virtual hub route tables with flexible routing configurations
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
