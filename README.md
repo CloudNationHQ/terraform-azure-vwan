@@ -24,6 +24,8 @@ Nat rules support for address translation on vpn gateways
 
 Expressroute gateway enablement on virtual hubs for hybrid connectivity
 
+Custom virtual hub route tables with flexible routing configurations
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -46,7 +48,6 @@ The following resources are used by this module:
 - [azurerm_express_route_gateway.er_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/express_route_gateway) (resource)
 - [azurerm_point_to_site_vpn_gateway.p2s_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/point_to_site_vpn_gateway) (resource)
 - [azurerm_virtual_hub.vhub](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_hub) (resource)
-- [azurerm_virtual_hub_route_table.route_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_hub_route_table) (resource)
 - [azurerm_virtual_hub_security_partner_provider.spp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_hub_security_partner_provider) (resource)
 - [azurerm_virtual_wan.vwan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_wan) (resource)
 - [azurerm_vpn_gateway.vpn_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_gateway) (resource)
@@ -87,17 +88,6 @@ object({
         address_prefixes    = list(string)
         next_hop_ip_address = string
       })), {})
-      hub_route_table = optional(object({
-        name   = optional(string)
-        labels = optional(set(string))
-        routes = optional(list(object({
-          name              = string
-          destinations_type = string
-          destinations      = list(string)
-          next_hop          = string
-          next_hop_type     = optional(string)
-        })), [])
-      }))
       point_to_site_vpn = optional(object({
         vpn_server_configuration_name       = optional(string)
         authentication_types                = optional(list(string), ["Certificate"])
