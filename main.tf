@@ -67,46 +67,6 @@ resource "azurerm_virtual_hub" "vhub" {
   }
 }
 
-# resource "azurerm_virtual_hub_route_table" "route_table" {
-#   for_each = nonsensitive({
-#     for k, v in lookup(var.vwan, "vhubs", {}) : k => v
-#     if lookup(
-#       v, "hub_route_table", null
-#     ) != null
-#   })
-#
-#   name = coalesce(
-#     each.value.hub_route_table.name, "hub-route-table-${each.key}"
-#   )
-#   virtual_hub_id = azurerm_virtual_hub.vhub[each.key].id
-#   labels         = each.value.hub_route_table.labels
-#
-#   dynamic "route" {
-#     for_each = try(
-#       each.value.hub_route_table.routes, {}
-#     )
-#
-#     content {
-#       name              = route.value.name
-#       destinations_type = route.value.destinations_type
-#       destinations      = route.value.destinations
-#       next_hop_type     = route.value.next_hop_type
-#       next_hop          = route.value.next_hop
-#     }
-#   }
-
-# dynamic "route" {
-#   for_each = try([each.value.hub_route_table.route], {})
-#   content {
-#     name              = route.value.name
-#     destinations_type = route.value.destinations_type
-#     destinations      = route.value.destinations
-#     next_hop_type     = route.value.next_hop_type
-#     next_hop          = route.value.next_hop
-#   }
-# }
-# }
-
 resource "azurerm_vpn_server_configuration" "p2s_config" {
   for_each = nonsensitive({
     for k, v in lookup(var.vwan, "vhubs", {}) : k => v
