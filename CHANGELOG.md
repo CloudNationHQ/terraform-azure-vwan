@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.0.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v4.5.0...v5.0.0) (2025-06-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* The data structure changed, causing a recreate on existing resources.
+
+### Features
+
+* small refactor ([#110](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/110)) ([cc1158b](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/cc1158be75f75de8ae8ca521f57a5fc159c19b16))
+
 ## [4.5.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v4.4.1...v4.5.0) (2025-06-03)
 
 
