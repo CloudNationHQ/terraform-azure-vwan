@@ -29,21 +29,24 @@ The following input variables are required:
 
 ### <a name="input_configs"></a> [configs](#input\_configs)
 
-Description: the configurations for the routing intents.
+Description: Contains all routing intent configurations.
 
-Type: `any`
+Type:
+
+```hcl
+map(object({
+    name           = optional(string, null)
+    virtual_hub_id = string
+    routing_policies = map(object({
+      destinations = list(string)
+      next_hop     = string
+    }))
+  }))
+```
 
 ## Optional Inputs
 
-The following input variables are optional (have default values):
-
-### <a name="input_resource_group"></a> [resource\_group](#input\_resource\_group)
-
-Description: default resource group and can be used if resourcegroup is not specified inside the object.
-
-Type: `string`
-
-Default: `null`
+No optional inputs.
 
 ## Outputs
 

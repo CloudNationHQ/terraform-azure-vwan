@@ -3,8 +3,8 @@ resource "azurerm_virtual_wan" "vwan" {
 
   resource_group_name = coalesce(
     lookup(
-      var.vwan, "resource_group", null
-    ), var.resource_group
+      var.vwan, "resource_group_name", null
+    ), var.resource_group_name
   )
 
   location = coalesce(
@@ -31,8 +31,8 @@ resource "azurerm_virtual_hub" "vhub" {
 
   resource_group_name = coalesce(
     lookup(
-      var.vwan, "resource_group", null
-    ), var.resource_group
+      var.vwan, "resource_group_name", null
+    ), var.resource_group_name
   )
 
   location = coalesce(
@@ -41,8 +41,9 @@ resource "azurerm_virtual_hub" "vhub" {
   )
 
   name = coalesce(
-    each.value.name,
-    join("-", [var.naming.virtual_hub, each.key])
+    each.value.name, try(
+      join("-", [var.naming.virtual_hub, each.key]), null
+    ), each.key
   )
 
   address_prefix                         = each.value.address_prefix
@@ -77,8 +78,8 @@ resource "azurerm_vpn_server_configuration" "p2s_config" {
 
   resource_group_name = coalesce(
     lookup(
-      var.vwan, "resource_group", null
-    ), var.resource_group
+      var.vwan, "resource_group_name", null
+    ), var.resource_group_name
   )
 
   location = coalesce(
@@ -190,8 +191,8 @@ resource "azurerm_point_to_site_vpn_gateway" "p2s_gateway" {
   })
 
   resource_group_name = coalesce(
-    lookup(var.vwan, "resource_group", null
-    ), var.resource_group
+    lookup(var.vwan, "resource_group_name", null
+    ), var.resource_group_name
   )
 
   location = coalesce(
@@ -200,8 +201,9 @@ resource "azurerm_point_to_site_vpn_gateway" "p2s_gateway" {
   )
 
   name = coalesce(
-    each.value.name,
-    join("-", [var.naming.point_to_site_vpn_gateway, each.key])
+    each.value.name, try(
+      join("-", [var.naming.point_to_site_vpn_gateway, each.key]), null
+    ), each.key
   )
 
   virtual_hub_id                      = azurerm_virtual_hub.vhub[each.key].id
@@ -257,8 +259,8 @@ resource "azurerm_vpn_gateway" "vpn_gateway" {
 
   resource_group_name = coalesce(
     lookup(
-      var.vwan, "resource_group", null
-    ), var.resource_group
+      var.vwan, "resource_group_name", null
+    ), var.resource_group_name
   )
 
   location = coalesce(
@@ -280,7 +282,7 @@ resource "azurerm_vpn_gateway" "vpn_gateway" {
   )
 
   dynamic "bgp_settings" {
-    for_each = try(each.value.bgp_settings, null) != null ? [each.value.bgp_settings] : []
+    for_each = try(each.value.site_to_site_vpn.bgp_settings, null) != null ? [each.value.site_to_site_vpn.bgp_settings] : []
 
     content {
       asn         = bgp_settings.value.asn
@@ -322,8 +324,8 @@ resource "azurerm_vpn_site" "vpn_site" {
 
 
   resource_group_name = coalesce(
-    lookup(var.vwan, "resource_group", null
-    ), var.resource_group
+    lookup(var.vwan, "resource_group_name", null
+    ), var.resource_group_name
   )
 
   location = coalesce(
@@ -338,7 +340,7 @@ resource "azurerm_vpn_site" "vpn_site" {
   )
 
   virtual_wan_id = azurerm_virtual_wan.vwan.id
-  address_cidrs  = [each.value.address_prefix]
+  address_cidrs  = each.value.address_cidrs
   device_vendor  = each.value.device_vendor
   device_model   = each.value.device_model
 
@@ -363,7 +365,6 @@ resource "azurerm_vpn_site" "vpn_site" {
   }
 
   dynamic "link" {
-    # Skip the conditional entirely and handle null values in the content block
     for_each = lookup(each.value, "vpn_links", { "link1" = {} })
 
     content {
@@ -420,12 +421,13 @@ resource "azurerm_vpn_gateway_connection" "vpn_connection" {
     )
 
     content {
-      name = vpn_link.key
+      name = coalesce(
+        vpn_link.value.name, vpn_link.key
+      )
+
       vpn_site_link_id = one([
         for link in azurerm_vpn_site.vpn_site["${each.value.vhub_key}-${each.value.site_key}"].link :
-        link.id if link.name == (
-          try(each.value.vpn_links[vpn_link.key].name, vpn_link.key)
-        )
+        link.id if link.name == coalesce(vpn_link.value.name, vpn_link.key)
       ])
 
       bgp_enabled                           = vpn_link.value.bgp_enabled
@@ -470,20 +472,38 @@ resource "azurerm_vpn_gateway_connection" "vpn_connection" {
     }
   }
 
-  routing {
-    associated_route_table = azurerm_virtual_hub.vhub[each.value.vhub_key].default_route_table_id
-    inbound_route_map_id   = each.value.inbound_route_map_id
-    outbound_route_map_id  = each.value.outbound_route_map_id
+  dynamic "routing" {
+    for_each = try(each.value.routing, null) != null ? [each.value.routing] : []
 
-    propagated_route_table {
-      route_table_ids = [azurerm_virtual_hub.vhub[each.value.vhub_key].default_route_table_id]
-      labels          = ["default"]
+    content {
+      associated_route_table = try(
+        each.value.routing.associated_route_table, azurerm_virtual_hub.vhub[each.value.vhub_key].default_route_table_id
+      )
+
+      inbound_route_map_id  = routing.value.inbound_route_map_id
+      outbound_route_map_id = routing.value.outbound_route_map_id
+
+      dynamic "propagated_route_table" {
+        for_each = try(routing.value.propagated_route_table, null) != null ? [routing.value.propagated_route_table] : []
+
+        content {
+          route_table_ids = try(
+            propagated_route_table.value.route_table_ids,
+            [azurerm_virtual_hub.vhub[each.value.vhub_key].default_route_table_id]
+          )
+          labels = propagated_route_table.value.labels
+        }
+      }
     }
   }
 
-  traffic_selector_policy {
-    local_address_ranges  = each.value.local_address_ranges
-    remote_address_ranges = each.value.remote_address_ranges
+  dynamic "traffic_selector_policy" {
+    for_each = lookup(each.value, "traffic_selector_policy", {})
+
+    content {
+      local_address_ranges  = traffic_selector_policy.value.local_address_ranges
+      remote_address_ranges = traffic_selector_policy.value.remote_address_ranges
+    }
   }
 }
 
@@ -544,8 +564,8 @@ resource "azurerm_express_route_gateway" "er_gateway" {
   })
 
   resource_group_name = coalesce(
-    lookup(var.vwan, "resource_group", null
-    ), var.resource_group
+    lookup(var.vwan, "resource_group_name", null
+    ), var.resource_group_name
   )
 
   location = coalesce(
@@ -555,7 +575,9 @@ resource "azurerm_express_route_gateway" "er_gateway" {
   )
 
   name = coalesce(
-    each.value.express_route_gateway.name, join("-", [var.naming.express_route_gateway, each.key])
+    each.value.express_route_gateway.name, try(
+      join("-", [var.naming.express_route_gateway, each.key]), null
+    ), each.key
   )
 
   virtual_hub_id                = azurerm_virtual_hub.vhub[each.key].id
@@ -574,8 +596,8 @@ resource "azurerm_virtual_hub_security_partner_provider" "spp" {
   })
 
   resource_group_name = coalesce(
-    lookup(var.vwan, "resource_group", null
-    ), var.resource_group
+    lookup(var.vwan, "resource_group_name", null
+    ), var.resource_group_name
   )
 
   location = coalesce(

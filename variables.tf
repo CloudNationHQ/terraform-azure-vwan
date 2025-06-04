@@ -2,7 +2,7 @@ variable "vwan" {
   description = "Contains all virtual wan configuration"
   type = object({
     name                              = string
-    resource_group                    = optional(string, null)
+    resource_group_name               = optional(string, null)
     location                          = optional(string, null)
     allow_branch_to_branch_traffic    = optional(bool, true)
     disable_vpn_encryption            = optional(bool, false)
@@ -97,10 +97,10 @@ variable "vwan" {
           }))
         }))
         vpn_sites = optional(map(object({
-          name           = optional(string)
-          address_prefix = string
-          device_vendor  = optional(string, "Microsoft")
-          device_model   = optional(string, "VpnSite")
+          name          = optional(string)
+          address_cidrs = optional(list(string), [])
+          device_vendor = optional(string, "Microsoft")
+          device_model  = optional(string)
           o365_policy = optional(object({
             traffic_category = optional(object({
               allow_endpoint_enabled    = optional(bool, false)
@@ -122,11 +122,21 @@ variable "vwan" {
           connections = optional(map(object({
             name                      = optional(string)
             internet_security_enabled = optional(bool, false)
-            local_address_ranges      = optional(list(string), [])
-            remote_address_ranges     = optional(list(string), [])
-            inbound_route_map_id      = optional(string, null)
-            outbound_route_map_id     = optional(string, null)
+            routing = optional(object({
+              associated_route_table = optional(string)
+              inbound_route_map_id   = optional(string)
+              outbound_route_map_id  = optional(string)
+              propagated_route_table = optional(object({
+                route_table_ids = optional(list(string))
+                labels          = optional(list(string), [])
+              }))
+            }))
+            traffic_selector_policy = optional(map(object({
+              local_address_ranges  = list(string)
+              remote_address_ranges = list(string)
+            })), {})
             vpn_links = map(object({
+              name                                  = optional(string)
               shared_key                            = string
               bgp_enabled                           = optional(bool, false)
               protocol                              = optional(string, "IKEv2")
@@ -185,12 +195,26 @@ variable "vwan" {
 
   validation {
     condition     = var.vwan.location != null || var.location != null
-    error_message = "location must be provided either in the storage object or as a separate variable."
+    error_message = "location must be provided either in the object or as a separate variable."
   }
 
   validation {
-    condition     = var.vwan.resource_group != null || var.resource_group != null
-    error_message = "resource group name must be provided either in the storage object or as a separate variable."
+    condition     = var.vwan.resource_group_name != null || var.resource_group_name != null
+    error_message = "resource group name must be provided either in the object or as a separate variable."
+  }
+
+  validation {
+    condition = can(flatten([
+      for vhub_key, vhub in var.vwan.vhubs : [
+        for site_key, site in vhub.site_to_site_vpn.vpn_sites : [
+          for conn_key, conn in site.connections : [
+            for conn_link_key, conn_link in conn.vpn_links :
+            regex("^${coalesce(site.vpn_links[conn_link_key].name, conn_link_key)}$", coalesce(conn_link.name, conn_link_key))
+          ]
+        ]
+      ]
+    ]))
+    error_message = "vpn_link names must match exactly between site and connection"
   }
 }
 
@@ -206,7 +230,7 @@ variable "location" {
   default     = null
 }
 
-variable "resource_group" {
+variable "resource_group_name" {
   description = "default resource group and can be used if resourcegroup is not specified inside the object."
   type        = string
   default     = null
