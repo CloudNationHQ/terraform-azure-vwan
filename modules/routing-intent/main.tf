@@ -2,7 +2,10 @@
 resource "azurerm_virtual_hub_routing_intent" "routing_intent" {
   for_each = var.configs
 
-  name           = try(each.value.name, each.key)
+  name = coalesce(
+    each.value.name, each.key
+  )
+
   virtual_hub_id = each.value.virtual_hub_id
 
   dynamic "routing_policy" {

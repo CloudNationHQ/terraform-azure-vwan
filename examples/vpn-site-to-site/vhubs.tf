@@ -35,8 +35,7 @@ locals {
         }
         vpn_sites = {
           site1 = {
-            address_prefix = "192.168.1.0/24"
-            gateway_ip     = "192.168.1.1"
+            address_cidrs = ["192.168.1.0/24"]
             o365_policy = {
               traffic_category = {
                 allow_endpoint_enabled    = true
@@ -57,10 +56,12 @@ locals {
             }
             connections = {
               connection1 = {
-                connection_type       = "IPsec"
-                routing_weight        = 10
-                local_address_ranges  = ["10.0.0.0/16"]
-                remote_address_ranges = ["192.168.1.0/24"]
+                traffic_selector_policy = {
+                  policy1 = {
+                    local_address_ranges  = ["10.0.0.0/16"]
+                    remote_address_ranges = ["192.168.1.0/24"]
+                  }
+                }
                 vpn_links = {
                   link1 = {
                     shared_key  = module.kv.secrets.psk.value

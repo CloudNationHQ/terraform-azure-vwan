@@ -69,7 +69,7 @@ Type:
 ```hcl
 object({
     name                              = string
-    resource_group                    = optional(string, null)
+    resource_group_name               = optional(string, null)
     location                          = optional(string, null)
     allow_branch_to_branch_traffic    = optional(bool, true)
     disable_vpn_encryption            = optional(bool, false)
@@ -164,10 +164,10 @@ object({
           }))
         }))
         vpn_sites = optional(map(object({
-          name           = optional(string)
-          address_prefix = string
-          device_vendor  = optional(string, "Microsoft")
-          device_model   = optional(string, "VpnSite")
+          name          = optional(string)
+          address_cidrs = optional(list(string), [])
+          device_vendor = optional(string, "Microsoft")
+          device_model  = optional(string)
           o365_policy = optional(object({
             traffic_category = optional(object({
               allow_endpoint_enabled    = optional(bool, false)
@@ -189,11 +189,21 @@ object({
           connections = optional(map(object({
             name                      = optional(string)
             internet_security_enabled = optional(bool, false)
-            local_address_ranges      = optional(list(string), [])
-            remote_address_ranges     = optional(list(string), [])
-            inbound_route_map_id      = optional(string, null)
-            outbound_route_map_id     = optional(string, null)
+            routing = optional(object({
+              associated_route_table = optional(string)
+              inbound_route_map_id   = optional(string)
+              outbound_route_map_id  = optional(string)
+              propagated_route_table = optional(object({
+                route_table_ids = optional(list(string))
+                labels          = optional(list(string), [])
+              }))
+            }))
+            traffic_selector_policy = optional(map(object({
+              local_address_ranges  = list(string)
+              remote_address_ranges = list(string)
+            })), {})
             vpn_links = map(object({
+              name                                  = optional(string)
               shared_key                            = string
               bgp_enabled                           = optional(bool, false)
               protocol                              = optional(string, "IKEv2")
@@ -271,7 +281,7 @@ Type: `map(string)`
 
 Default: `null`
 
-### <a name="input_resource_group"></a> [resource\_group](#input\_resource\_group)
+### <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name)
 
 Description: default resource group and can be used if resourcegroup is not specified inside the object.
 

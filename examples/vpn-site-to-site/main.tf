@@ -1,6 +1,6 @@
 module "naming" {
   source  = "cloudnationhq/naming/azure"
-  version = "~> 0.23"
+  version = "~> 0.24"
 
   suffix = ["demo", "dev"]
 }
@@ -41,9 +41,9 @@ module "kv" {
 
 module "firewall" {
   source  = "cloudnationhq/fw/azure"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
-  resource_group = module.rg.groups.demo.name
+  resource_group_name = module.rg.groups.demo.name
 
   instance = {
     name     = module.naming.firewall.name
@@ -59,11 +59,11 @@ module "firewall" {
 
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 4.0"
+  version = "~> 5.0"
 
-  naming         = local.naming
-  location       = module.rg.groups.demo.location
-  resource_group = module.rg.groups.demo.name
+  naming              = local.naming
+  location            = module.rg.groups.demo.location
+  resource_group_name = module.rg.groups.demo.name
 
   vwan = {
     name                           = module.naming.virtual_wan.name

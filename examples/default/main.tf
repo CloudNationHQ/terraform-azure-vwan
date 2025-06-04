@@ -1,6 +1,6 @@
 module "naming" {
   source  = "cloudnationhq/naming/azure"
-  version = "~> 0.23"
+  version = "~> 0.24"
 
   suffix = ["demo", "dev"]
 }
@@ -19,11 +19,11 @@ module "rg" {
 
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 4.0"
+  version = "~> 5.0"
 
   vwan = {
     name                           = module.naming.virtual_wan.name
-    resource_group                 = module.rg.groups.demo.name
+    resource_group_name            = module.rg.groups.demo.name
     location                       = module.rg.groups.demo.location
     allow_branch_to_branch_traffic = true
     disable_vpn_encryption         = false

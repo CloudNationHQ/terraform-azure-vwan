@@ -10,13 +10,10 @@ TEST_ARGS := $(if $(skip-destroy),-skip-destroy=$(skip-destroy)) \
              $(if $(example),-example=$(example))
 
 test:
-	cd tests && go test -v -timeout 60m -run '^TestApplyNoError$$' -args $(TEST_ARGS) .
-
-test-sequential:
-	cd tests && go test -v -timeout 120m -run '^TestApplyAllSequential$$' -args $(TEST_ARGS) .
+	cd tests && go test -v -timeout 300m -run '^TestApplyNoError$$' -args $(TEST_ARGS) .
 
 test-parallel:
-	cd tests && go test -v -timeout 600m -run '^TestApplyAllParallel$$' -args $(TEST_ARGS) .
+	cd tests && go test -v -timeout 300m -run '^TestApplyAllParallel$$' -args $(TEST_ARGS) .
 
 docs:
 	@echo "Generating documentation for root and modules..."

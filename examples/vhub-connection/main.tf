@@ -1,6 +1,6 @@
 module "naming" {
   source  = "cloudnationhq/naming/azure"
-  version = "~> 0.23"
+  version = "~> 0.24"
 
   suffix = ["demo", "dev"]
 }
@@ -19,15 +19,15 @@ module "rg" {
 
 module "network" {
   source  = "cloudnationhq/vnet/azure"
-  version = "~> 8.0"
+  version = "~> 9.0"
 
   naming = local.naming
 
   vnet = {
-    name           = module.naming.virtual_network.name
-    location       = module.rg.groups.demo.location
-    resource_group = module.rg.groups.demo.name
-    address_space  = ["10.19.0.0/16"]
+    name                = module.naming.virtual_network.name
+    location            = module.rg.groups.demo.location
+    resource_group_name = module.rg.groups.demo.name
+    address_space       = ["10.19.0.0/16"]
 
     subnets = {
       sn1 = {
@@ -46,7 +46,6 @@ module "rg_vwan" {
     azurerm = azurerm.connectivity
   }
 
-
   groups = {
     vwan = {
       name     = "${module.naming.resource_group.name_unique}1"
@@ -57,7 +56,7 @@ module "rg_vwan" {
 
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 4.0"
+  version = "~> 5.0"
 
   providers = {
     azurerm = azurerm.connectivity
@@ -67,7 +66,7 @@ module "vwan" {
 
   vwan = {
     name                           = module.naming.virtual_wan.name
-    resource_group                 = module.rg_vwan.groups.vwan.name
+    resource_group_name            = module.rg_vwan.groups.vwan.name
     location                       = module.rg_vwan.groups.vwan.location
     allow_branch_to_branch_traffic = true
     disable_vpn_encryption         = false
@@ -84,15 +83,15 @@ module "vwan" {
 
 module "vhub-connection" {
   source  = "cloudnationhq/vwan/azure//modules/vhub-connection"
-  version = "~> 4.0"
+  version = "~> 5.0"
 
   providers = {
     azurerm = azurerm.connectivity
   }
 
   virtual_hub = {
-    resource_group = module.vwan.vwan.resource_group_name
-    name           = module.vwan.vhubs.weu.name
+    resource_group_name = module.vwan.vwan.resource_group_name
+    name                = module.vwan.vhubs.weu.name
 
     connections = {
       prod = {
