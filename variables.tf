@@ -204,12 +204,13 @@ variable "vwan" {
   }
 
   validation {
-    condition = can(flatten([
-      for vhub_key, vhub in var.vwan.vhubs : [
-        for site_key, site in vhub.site_to_site_vpn.vpn_sites : [
-          for conn_key, conn in site.connections : [
-            for conn_link_key, conn_link in conn.vpn_links :
-            regex("^${coalesce(site.vpn_links[conn_link_key].name, conn_link_key)}$", coalesce(conn_link.name, conn_link_key))
+    condition = alltrue(flatten([
+      for vhub in var.vwan.vhubs : [
+        for site in try(vhub.site_to_site_vpn.vpn_sites, {}) : [
+          for conn in try(site.connections, {}) : [
+            for conn_link_key, conn_link in try(conn.vpn_links, {}) : [
+              coalesce(site.vpn_links[conn_link_key].name, conn_link_key) == coalesce(conn_link.name, conn_link_key)
+            ]
           ]
         ]
       ]
