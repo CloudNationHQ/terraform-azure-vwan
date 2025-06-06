@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.0.0...v5.0.1) (2025-06-06)
+
+
+### Bug Fixes
+
+* remove vpn link validation condition ([#112](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/112)) ([d6357ee](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/d6357ee9116bd94ec8117db81caa606dc2593ffd))
+
 ## [5.0.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v4.5.0...v5.0.0) (2025-06-04)
 
 
