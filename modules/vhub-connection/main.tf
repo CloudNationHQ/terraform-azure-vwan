@@ -50,30 +50,11 @@
 #   }
 # }
 
-# existing hub
-data "azurerm_virtual_hub" "vhub" {
-  for_each = var.use_existing_hub ? { hub = var.virtual_hub } : {}
-
-  name                = each.value.name
-  resource_group_name = each.value.resource_group_name
-}
-
-resource "terraform_data" "virtual_hub_id" {
-  for_each = var.use_existing_hub ? { hub = data.azurerm_virtual_hub.vhub["hub"].id } : {}
-
-  input = each.value
-
-  lifecycle {
-    ignore_changes = [input]
-  }
-}
-
-# virtual hub connections
 resource "azurerm_virtual_hub_connection" "vcon" {
   for_each = var.virtual_hub.connections
 
   name                      = try(each.value.name, each.key)
-  virtual_hub_id            = var.use_existing_hub ? terraform_data.virtual_hub_id["hub"].output : var.virtual_hub.virtual_hub_id
+  virtual_hub_id            = var.virtual_hub.virtual_hub_id
   remote_virtual_network_id = each.value.remote_virtual_network_id
   internet_security_enabled = each.value.internet_security_enabled
 
