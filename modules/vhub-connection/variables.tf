@@ -1,17 +1,17 @@
-variable "use_existing_hub" {
-  description = "Whether to use data source to reference existing hub (spoke) or direct resource reference (connectivity)"
-  type        = bool
-  default     = false # Default to connectivity scenario (direct reference)
-}
+# variable "use_existing_hub" {
+#   description = "Whether to use data source to reference existing hub (spoke) or direct resource reference (connectivity)"
+#   type        = bool
+#   default     = false # Default to connectivity scenario (direct reference)
+# }
 
 variable "virtual_hub" {
   description = "Contains all virtual hub connection configurations."
   type = object({
-    name                = optional(string, null) # For data source lookup
-    resource_group_name = optional(string, null) # For data source lookup
-    virtual_hub_id      = optional(string, null) # For direct reference
+    # name                = optional(string, null) # For data source lookup
+    # resource_group_name = optional(string, null) # For data source lookup
     connections = optional(map(object({
       name                      = optional(string, null)
+      virtual_hub_id            = string
       remote_virtual_network_id = string
       internet_security_enabled = optional(bool, true)
       routing = optional(object({
