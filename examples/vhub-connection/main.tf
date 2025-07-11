@@ -101,5 +101,4 @@ module "vhub-connection" {
       }
     }
   }
-  depends_on = [module.vwan]
 }
