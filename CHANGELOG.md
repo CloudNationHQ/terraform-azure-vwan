@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.2](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.0.1...v5.0.2) (2025-07-11)
+
+
+### Bug Fixes
+
+* remove explicit depends_on to avoid recreation of vhub connections on an in-place update ([#115](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/115)) ([8c63cd0](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/8c63cd0c99f6b618d0b1e0d4d7a1df87b67f6a85))
+
 ## [5.0.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.0.0...v5.0.1) (2025-06-06)
 
 
