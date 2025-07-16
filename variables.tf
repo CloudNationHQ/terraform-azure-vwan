@@ -11,6 +11,7 @@ variable "vwan" {
     tags                              = optional(map(string))
     vhubs = optional(map(object({
       name                                   = optional(string)
+      resource_group_name                    = optional(string, null)
       location                               = optional(string, null)
       address_prefix                         = string
       sku                                    = optional(string, "Standard")
