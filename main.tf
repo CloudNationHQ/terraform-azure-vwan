@@ -248,7 +248,6 @@ resource "azurerm_point_to_site_vpn_gateway" "p2s_gateway" {
   }
 }
 
-# site to site vpn gatewayP
 resource "azurerm_vpn_gateway" "vpn_gateway" {
   for_each = nonsensitive({
     for k, v in lookup(var.vwan, "vhubs", {}) : k => v
@@ -259,8 +258,12 @@ resource "azurerm_vpn_gateway" "vpn_gateway" {
 
   resource_group_name = coalesce(
     lookup(
+      lookup(each.value, "site_to_site_vpn", {}), "resource_group_name", null
+    ),
+    lookup(
       var.vwan, "resource_group_name", null
-    ), var.resource_group_name
+    ),
+    var.resource_group_name
   )
 
   location = coalesce(
@@ -564,8 +567,13 @@ resource "azurerm_express_route_gateway" "er_gateway" {
   })
 
   resource_group_name = coalesce(
-    lookup(var.vwan, "resource_group_name", null
-    ), var.resource_group_name
+    lookup(
+      lookup(each.value, "express_route_gateway", {}), "resource_group_name", null
+    ),
+    lookup(
+      var.vwan, "resource_group_name", null
+    ),
+    var.resource_group_name
   )
 
   location = coalesce(
