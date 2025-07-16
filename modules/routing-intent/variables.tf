@@ -35,7 +35,7 @@ variable "configs" {
   validation {
     condition = alltrue([
       for config_key, config in var.configs : alltrue([
-        for policy_key, policy in config.routing_policies : can(regex("^/subscriptions/[^/]+/resourceGroups/[^/]+/providers/Microsoft.Network/(azureFirewalls|networkVirtualAppliances)/[^/]+$", policy.next_hop))
+        for policy_key, policy in config.routing_policies : can(regex("^/subscriptions/[^/]+/resourceGroups/[^/]+/providers/(Microsoft\\.Network/(azureFirewalls|networkVirtualAppliances)|Microsoft\\.Solutions/applications)/[^/]+$", policy.next_hop))
       ])
     ])
     error_message = "All next_hop values must be valid Azure Firewall or Network Virtual Appliance resource IDs."
