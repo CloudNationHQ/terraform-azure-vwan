@@ -99,10 +99,11 @@ variable "vwan" {
           }))
         }))
         vpn_sites = optional(map(object({
-          name          = optional(string)
-          address_cidrs = optional(list(string), [])
-          device_vendor = optional(string, "Microsoft")
-          device_model  = optional(string)
+          name                = optional(string)
+          resource_group_name = optional(string, null)
+          address_cidrs       = optional(list(string), [])
+          device_vendor       = optional(string, "Microsoft")
+          device_model        = optional(string)
           o365_policy = optional(object({
             traffic_category = optional(object({
               allow_endpoint_enabled    = optional(bool, false)

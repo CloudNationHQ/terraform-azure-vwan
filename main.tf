@@ -330,9 +330,15 @@ resource "azurerm_vpn_site" "vpn_site" {
 
 
   resource_group_name = coalesce(
-    lookup(var.vwan, "resource_group_name", null
-    ), var.resource_group_name
+    lookup(each.value, "resource_group_name", null),
+    lookup(var.vwan, "resource_group_name", null),
+    var.resource_group_name
   )
+
+  # resource_group_name = coalesce(
+  #   lookup(var.vwan, "resource_group_name", null
+  #   ), var.resource_group_name
+  # )
 
   location = coalesce(
     each.value.vhub_location, lookup(
