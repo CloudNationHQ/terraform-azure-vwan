@@ -18,7 +18,7 @@ resource "azurerm_virtual_wan" "vwan" {
   type                              = var.vwan.type
   office365_local_breakout_category = var.vwan.office365_local_breakout_category
 
-  tags = try(
+  tags = coalesce(
     var.vwan.tags, var.tags
   )
 }
@@ -55,7 +55,7 @@ resource "azurerm_virtual_hub" "vhub" {
   hub_routing_preference                 = each.value.hub_routing_preference
   virtual_router_auto_scale_min_capacity = each.value.virtual_router_auto_scale_min_capacity
 
-  tags = try(
+  tags = coalesce(
     each.value.tags, var.tags
   )
 
@@ -283,8 +283,8 @@ resource "azurerm_vpn_gateway" "vpn_gateway" {
   bgp_route_translation_for_nat_enabled = each.value.site_to_site_vpn.bgp_route_translation_for_nat_enabled
   scale_unit                            = each.value.site_to_site_vpn.scale_unit
 
-  tags = try(
-    var.vwan.tags, var.tags
+  tags = coalesce(
+    each.value.tags, var.tags
   )
 
   dynamic "bgp_settings" {
@@ -330,8 +330,9 @@ resource "azurerm_vpn_site" "vpn_site" {
 
 
   resource_group_name = coalesce(
-    lookup(var.vwan, "resource_group_name", null
-    ), var.resource_group_name
+    lookup(each.value, "resource_group_name", null),
+    lookup(var.vwan, "resource_group_name", null),
+    var.resource_group_name
   )
 
   location = coalesce(
@@ -341,8 +342,9 @@ resource "azurerm_vpn_site" "vpn_site" {
   )
 
   name = coalesce(
-    each.value.name,
-    join("-", [var.naming.vpn_site, "${each.value.vhub_key}-${each.value.site_key}"])
+    each.value.name, try(
+      join("-", [var.naming.vpn_site, "${each.value.vhub_key}-${each.value.site_key}"]), null
+    ), each.key
   )
 
   virtual_wan_id = azurerm_virtual_wan.vwan.id
@@ -594,7 +596,10 @@ resource "azurerm_express_route_gateway" "er_gateway" {
   virtual_hub_id                = azurerm_virtual_hub.vhub[each.key].id
   scale_units                   = each.value.express_route_gateway.scale_units
   allow_non_virtual_wan_traffic = each.value.express_route_gateway.allow_non_virtual_wan_traffic
-  tags                          = each.value.tags
+
+  tags = coalesce(
+    each.value.tags, var.tags
+  )
 }
 
 # security partner provider

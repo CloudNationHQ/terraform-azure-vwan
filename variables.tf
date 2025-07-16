@@ -88,6 +88,7 @@ variable "vwan" {
         routing_preference                    = optional(string, null)
         bgp_route_translation_for_nat_enabled = optional(bool, false)
         scale_unit                            = optional(number, 1)
+        tags                                  = optional(map(string))
         bgp_settings = optional(object({
           asn         = number
           peer_weight = number
@@ -99,10 +100,11 @@ variable "vwan" {
           }))
         }))
         vpn_sites = optional(map(object({
-          name          = optional(string)
-          address_cidrs = optional(list(string), [])
-          device_vendor = optional(string, "Microsoft")
-          device_model  = optional(string)
+          name                = optional(string)
+          resource_group_name = optional(string, null)
+          address_cidrs       = optional(list(string), [])
+          device_vendor       = optional(string, "Microsoft")
+          device_model        = optional(string)
           o365_policy = optional(object({
             traffic_category = optional(object({
               allow_endpoint_enabled    = optional(bool, false)
@@ -188,6 +190,7 @@ variable "vwan" {
         resource_group_name           = optional(string, null)
         scale_units                   = number
         allow_non_virtual_wan_traffic = optional(bool, false)
+        tags                          = optional(map(string))
       }))
       security_partner_provider = optional(object({
         name                   = string
