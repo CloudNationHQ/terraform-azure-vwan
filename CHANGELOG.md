@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.1.0...v5.1.1) (2025-07-16)
+
+
+### Bug Fixes
+
+* fix next hop validation routing intents ([#120](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/120)) ([c8a9065](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/c8a9065870864f952d2ce04f62ed25737eab4a4f))
+
 ## [5.1.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.0.2...v5.1.0) (2025-07-16)
 
 
