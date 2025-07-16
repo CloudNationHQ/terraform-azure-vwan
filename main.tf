@@ -341,9 +341,15 @@ resource "azurerm_vpn_site" "vpn_site" {
   )
 
   name = coalesce(
-    each.value.name,
-    join("-", [var.naming.vpn_site, "${each.value.vhub_key}-${each.value.site_key}"])
+    each.value.name, try(
+      join("-", [var.naming.vpn_site, "${each.value.vhub_key}-${each.value.site_key}"]), null
+    ), each.key
   )
+
+  # name = coalesce(
+  #   each.value.name,
+  #   join("-", [var.naming.vpn_site, "${each.value.vhub_key}-${each.value.site_key}"])
+  # )
 
   virtual_wan_id = azurerm_virtual_wan.vwan.id
   address_cidrs  = each.value.address_cidrs
