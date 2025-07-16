@@ -335,11 +335,6 @@ resource "azurerm_vpn_site" "vpn_site" {
     var.resource_group_name
   )
 
-  # resource_group_name = coalesce(
-  #   lookup(var.vwan, "resource_group_name", null
-  #   ), var.resource_group_name
-  # )
-
   location = coalesce(
     each.value.vhub_location, lookup(
       var.vwan, "location", null
@@ -351,11 +346,6 @@ resource "azurerm_vpn_site" "vpn_site" {
       join("-", [var.naming.vpn_site, "${each.value.vhub_key}-${each.value.site_key}"]), null
     ), each.key
   )
-
-  # name = coalesce(
-  #   each.value.name,
-  #   join("-", [var.naming.vpn_site, "${each.value.vhub_key}-${each.value.site_key}"])
-  # )
 
   virtual_wan_id = azurerm_virtual_wan.vwan.id
   address_cidrs  = each.value.address_cidrs
