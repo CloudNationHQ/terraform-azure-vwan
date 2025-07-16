@@ -152,6 +152,7 @@ object({
       }))
       site_to_site_vpn = optional(object({
         name                                  = string
+        resource_group_name                   = optional(string, null)
         routing_preference                    = optional(string, null)
         bgp_route_translation_for_nat_enabled = optional(bool, false)
         scale_unit                            = optional(number, 1)
@@ -206,7 +207,7 @@ object({
             })), {})
             vpn_links = map(object({
               name                                  = optional(string)
-              shared_key                            = string
+              shared_key                            = optional(string, null)
               bgp_enabled                           = optional(bool, false)
               protocol                              = optional(string, "IKEv2")
               ingress_nat_rule_ids                  = optional(list(string), [])
@@ -252,6 +253,7 @@ object({
       }), null)
       express_route_gateway = optional(object({
         name                          = optional(string)
+        resource_group_name           = optional(string, null)
         scale_units                   = number
         allow_non_virtual_wan_traffic = optional(bool, false)
       }))
