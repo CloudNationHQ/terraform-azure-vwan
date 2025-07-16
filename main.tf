@@ -31,6 +31,9 @@ resource "azurerm_virtual_hub" "vhub" {
 
   resource_group_name = coalesce(
     lookup(
+      each.value, "resource_group_name", null
+    ),
+    lookup(
       var.vwan, "resource_group_name", null
     ), var.resource_group_name
   )
