@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.2.0...v5.2.1) (2025-07-16)
+
+
+### Bug Fixes
+
+* fix fallback naming vpn sites ([#124](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/124)) ([29dbb77](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/29dbb777b5ec820f2e897c5c50b2ca8cceb5ccbc))
+
 ## [5.2.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.1.1...v5.2.0) (2025-07-16)
 
 
