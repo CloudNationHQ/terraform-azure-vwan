@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.1.1...v5.2.0) (2025-07-16)
+
+
+### Features
+
+* add support for using different resourcegroups for virtual hubs as well ([#122](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/122)) ([ada0f71](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/ada0f71e155c61f1d81204cd66bf141eb626a1d2))
+
 ## [5.1.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.1.0...v5.1.1) (2025-07-16)
 
 
