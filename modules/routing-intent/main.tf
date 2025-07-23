@@ -12,7 +12,7 @@ resource "azurerm_virtual_hub_routing_intent" "routing_intent" {
     for_each = each.value.routing_policies
 
     content {
-      name         = routing_policy.key
+      name         = coalesce(routing_policy.value.name, routing_policy.key)
       destinations = routing_policy.value.destinations
       next_hop     = routing_policy.value.next_hop
     }

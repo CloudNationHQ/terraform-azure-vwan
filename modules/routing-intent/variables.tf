@@ -4,6 +4,7 @@ variable "configs" {
     name           = optional(string, null)
     virtual_hub_id = string
     routing_policies = map(object({
+      name         = optional(string)
       destinations = list(string)
       next_hop     = string
     }))
@@ -30,14 +31,5 @@ variable "configs" {
       ])
     ])
     error_message = "Each routing policy must have at least one destination."
-  }
-
-  validation {
-    condition = alltrue([
-      for config_key, config in var.configs : alltrue([
-        for policy_key, policy in config.routing_policies : can(regex("^/subscriptions/[^/]+/resourceGroups/[^/]+/providers/(Microsoft\\.Network/(azureFirewalls|networkVirtualAppliances)|Microsoft\\.Solutions/applications)/[^/]+$", policy.next_hop))
-      ])
-    ])
-    error_message = "All next_hop values must be valid Azure Firewall or Network Virtual Appliance resource IDs."
   }
 }
