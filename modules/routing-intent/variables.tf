@@ -4,6 +4,7 @@ variable "configs" {
     name           = optional(string, null)
     virtual_hub_id = string
     routing_policies = map(object({
+      name         = optional(string)
       destinations = list(string)
       next_hop     = string
     }))
