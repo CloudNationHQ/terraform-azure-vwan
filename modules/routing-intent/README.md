@@ -35,7 +35,7 @@ Type:
 
 ```hcl
 map(object({
-    name           = optional(string, null)
+    name           = optional(string)
     virtual_hub_id = string
     routing_policies = map(object({
       name         = optional(string)

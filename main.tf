@@ -204,7 +204,7 @@ resource "azurerm_point_to_site_vpn_gateway" "p2s_gateway" {
   )
 
   name = coalesce(
-    each.value.name, try(
+    each.value.point_to_site_vpn.name, try(
       join("-", [var.naming.point_to_site_vpn_gateway, each.key]), null
     ), each.key
   )

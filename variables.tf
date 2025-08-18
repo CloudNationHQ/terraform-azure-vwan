@@ -2,8 +2,8 @@ variable "vwan" {
   description = "Contains all virtual wan configuration"
   type = object({
     name                              = string
-    resource_group_name               = optional(string, null)
-    location                          = optional(string, null)
+    resource_group_name               = optional(string)
+    location                          = optional(string)
     allow_branch_to_branch_traffic    = optional(bool, true)
     disable_vpn_encryption            = optional(bool, false)
     type                              = optional(string, "Standard")
@@ -11,8 +11,8 @@ variable "vwan" {
     tags                              = optional(map(string))
     vhubs = optional(map(object({
       name                                   = optional(string)
-      resource_group_name                    = optional(string, null)
-      location                               = optional(string, null)
+      resource_group_name                    = optional(string)
+      location                               = optional(string)
       address_prefix                         = string
       sku                                    = optional(string, "Standard")
       hub_routing_preference                 = optional(string, "ExpressRoute")
@@ -23,6 +23,7 @@ variable "vwan" {
         next_hop_ip_address = string
       })), {})
       point_to_site_vpn = optional(object({
+        name                                = optional(string)
         vpn_server_configuration_name       = optional(string)
         authentication_types                = optional(list(string), ["Certificate"])
         protocols                           = optional(list(string), ["IkeV2"])
@@ -84,8 +85,8 @@ variable "vwan" {
       }))
       site_to_site_vpn = optional(object({
         name                                  = string
-        resource_group_name                   = optional(string, null)
-        routing_preference                    = optional(string, null)
+        resource_group_name                   = optional(string)
+        routing_preference                    = optional(string)
         bgp_route_translation_for_nat_enabled = optional(bool, false)
         scale_unit                            = optional(number, 1)
         tags                                  = optional(map(string))
@@ -101,7 +102,7 @@ variable "vwan" {
         }))
         vpn_sites = optional(map(object({
           name                = optional(string)
-          resource_group_name = optional(string, null)
+          resource_group_name = optional(string)
           address_cidrs       = optional(list(string), [])
           device_vendor       = optional(string, "Microsoft")
           device_model        = optional(string)
@@ -114,10 +115,10 @@ variable "vwan" {
           }))
           vpn_links = optional(map(object({
             name          = optional(string)
-            ip_address    = optional(string, null)
-            provider_name = optional(string, null)
-            speed_in_mbps = optional(number, null)
-            fqdn          = optional(string, null)
+            ip_address    = optional(string)
+            provider_name = optional(string)
+            speed_in_mbps = optional(number)
+            fqdn          = optional(string)
             bgp = optional(object({
               peering_address = string
               asn             = number
@@ -141,7 +142,7 @@ variable "vwan" {
             })), {})
             vpn_links = map(object({
               name                                  = optional(string)
-              shared_key                            = optional(string, null)
+              shared_key                            = optional(string)
               bgp_enabled                           = optional(bool, false)
               protocol                              = optional(string, "IKEv2")
               ingress_nat_rule_ids                  = optional(list(string), [])
@@ -172,22 +173,22 @@ variable "vwan" {
         })), {})
         nat_rules = optional(map(object({
           name                = optional(string)
-          ip_configuration_id = optional(string, null)
+          ip_configuration_id = optional(string)
           mode                = optional(string, "EgressSnat")
           type                = optional(string, "Static")
           external_mappings = map(object({
             address_space = string
-            port_range    = optional(string, null)
+            port_range    = optional(string)
           }))
           internal_mappings = map(object({
             address_space = string
-            port_range    = optional(string, null)
+            port_range    = optional(string)
           }))
         })), {})
-      }), null)
+      }))
       express_route_gateway = optional(object({
         name                          = optional(string)
-        resource_group_name           = optional(string, null)
+        resource_group_name           = optional(string)
         scale_units                   = number
         allow_non_virtual_wan_traffic = optional(bool, false)
         tags                          = optional(map(string))
@@ -208,12 +209,162 @@ variable "vwan" {
     condition     = var.vwan.resource_group_name != null || var.resource_group_name != null
     error_message = "resource group name must be provided either in the object or as a separate variable."
   }
+
+  validation {
+    condition     = var.vwan.type == null || contains(["Standard", "Basic"], var.vwan.type)
+    error_message = "Virtual WAN type must be either 'Standard' or 'Basic'."
+  }
+
+  validation {
+    condition     = var.vwan.office365_local_breakout_category == null || contains(["None", "Optimize", "OptimizeAndAllow", "All"], var.vwan.office365_local_breakout_category)
+    error_message = "Office365 local breakout category must be one of: 'None', 'Optimize', 'OptimizeAndAllow', 'All'."
+  }
+
+  validation {
+    condition = alltrue([
+      for hub_key, hub in var.vwan.vhubs : hub.sku == null || contains(["Basic", "Standard"], hub.sku)
+    ])
+    error_message = "Virtual Hub SKU must be either 'Basic' or 'Standard'."
+  }
+
+  validation {
+    condition = alltrue([
+      for hub_key, hub in var.vwan.vhubs : hub.hub_routing_preference == null || contains(["ExpressRoute", "VpnGateway", "ASPath"], hub.hub_routing_preference)
+    ])
+    error_message = "Virtual Hub routing preference must be one of: 'ExpressRoute', 'VpnGateway', 'ASPath'."
+  }
+
+  validation {
+    condition = alltrue([
+      for hub_key, hub in var.vwan.vhubs : hub.virtual_router_auto_scale_min_capacity == null || (hub.virtual_router_auto_scale_min_capacity >= 2 && hub.virtual_router_auto_scale_min_capacity <= 50)
+    ])
+    error_message = "Virtual Hub auto scale minimum capacity must be between 2 and 50."
+  }
+
+  validation {
+    condition = alltrue([
+      for hub_key, hub in var.vwan.vhubs : can(cidrhost(hub.address_prefix, 0))
+    ])
+    error_message = "Virtual Hub address prefix must be a valid CIDR notation (e.g., '10.0.0.0/24')."
+  }
+
+  validation {
+    condition = alltrue([
+      for hub_key, hub in var.vwan.vhubs :
+      hub.point_to_site_vpn == null || alltrue([
+        for auth_type in hub.point_to_site_vpn.authentication_types : contains(["Certificate", "Radius", "AAD"], auth_type)
+      ])
+    ])
+    error_message = "Point-to-Site VPN authentication types must be from: 'Certificate', 'Radius', 'AAD'."
+  }
+
+  validation {
+    condition = alltrue([
+      for hub_key, hub in var.vwan.vhubs :
+      hub.point_to_site_vpn == null || alltrue([
+        for protocol in hub.point_to_site_vpn.protocols : contains(["IkeV2", "OpenVPN"], protocol)
+      ])
+    ])
+    error_message = "Point-to-Site VPN protocols must be from: 'IkeV2', 'OpenVPN'."
+  }
+
+  validation {
+    condition = alltrue([
+      for hub_key, hub in var.vwan.vhubs :
+      hub.point_to_site_vpn == null || (hub.point_to_site_vpn.scale_unit >= 1 && hub.point_to_site_vpn.scale_unit <= 20)
+    ])
+    error_message = "Point-to-Site VPN scale unit must be between 1 and 20."
+  }
+
+  validation {
+    condition = alltrue([
+      for hub_key, hub in var.vwan.vhubs :
+      hub.site_to_site_vpn == null || hub.site_to_site_vpn.routing_preference == null || contains(["Microsoft Network", "Internet"], hub.site_to_site_vpn.routing_preference)
+    ])
+    error_message = "Site-to-Site VPN routing preference must be either 'Microsoft Network' or 'Internet'."
+  }
+
+  validation {
+    condition = alltrue([
+      for hub_key, hub in var.vwan.vhubs :
+      hub.site_to_site_vpn == null || (hub.site_to_site_vpn.scale_unit >= 1 && hub.site_to_site_vpn.scale_unit <= 20)
+    ])
+    error_message = "Site-to-Site VPN scale unit must be between 1 and 20."
+  }
+
+  validation {
+    condition = alltrue([
+      for hub_key, hub in var.vwan.vhubs :
+      hub.site_to_site_vpn == null || hub.site_to_site_vpn.bgp_settings == null ||
+      (hub.site_to_site_vpn.bgp_settings.asn >= 1 && hub.site_to_site_vpn.bgp_settings.asn <= 4294967295 && hub.site_to_site_vpn.bgp_settings.asn != 65515)
+    ])
+    error_message = "BGP ASN must be between 1 and 4294967295, and cannot be 65515 (reserved by Azure)."
+  }
+
+  validation {
+    condition = alltrue([
+      for hub_key, hub in var.vwan.vhubs :
+      hub.site_to_site_vpn == null || hub.site_to_site_vpn.bgp_settings == null ||
+      (hub.site_to_site_vpn.bgp_settings.peer_weight >= 0 && hub.site_to_site_vpn.bgp_settings.peer_weight <= 100)
+    ])
+    error_message = "BGP peer weight must be between 0 and 100."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for hub_key, hub in var.vwan.vhubs : [
+        for site_key, site in(hub.site_to_site_vpn != null ? hub.site_to_site_vpn.vpn_sites : {}) : [
+          for conn_key, conn in site.connections : [
+            for link_key, link in conn.vpn_links :
+            link.connection_mode == null || contains(["Default", "InitiatorOnly", "ResponderOnly"], link.connection_mode)
+          ]
+        ]
+      ]
+    ]))
+    error_message = "VPN connection mode must be one of: 'Default', 'InitiatorOnly', 'ResponderOnly'."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for hub_key, hub in var.vwan.vhubs : [
+        for site_key, site in(hub.site_to_site_vpn != null ? hub.site_to_site_vpn.vpn_sites : {}) : [
+          for conn_key, conn in site.connections : [
+            for link_key, link in conn.vpn_links :
+            link.bandwidth_mbps == null || (link.bandwidth_mbps >= 10 && link.bandwidth_mbps <= 10000)
+          ]
+        ]
+      ]
+    ]))
+    error_message = "VPN connection bandwidth must be between 10 and 10000 Mbps."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for hub_key, hub in var.vwan.vhubs : [
+        for site_key, site in(hub.site_to_site_vpn != null ? hub.site_to_site_vpn.vpn_sites : {}) : [
+          for conn_key, conn in site.connections : [
+            for link_key, link in conn.vpn_links :
+            link.route_weight == null || (link.route_weight >= 0 && link.route_weight <= 32000)
+          ]
+        ]
+      ]
+    ]))
+    error_message = "VPN connection route weight must be between 0 and 32000."
+  }
+
+  validation {
+    condition = alltrue([
+      for hub_key, hub in var.vwan.vhubs :
+      hub.express_route_gateway == null || (hub.express_route_gateway.scale_units >= 1 && hub.express_route_gateway.scale_units <= 20)
+    ])
+    error_message = "ExpressRoute Gateway scale units must be between 1 and 20."
+  }
 }
 
 variable "naming" {
   description = "contains naming convention"
   type        = map(string)
-  default     = null
+  default     = {}
 }
 
 variable "location" {
