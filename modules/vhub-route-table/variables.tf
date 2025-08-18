@@ -41,7 +41,7 @@ variable "route_tables" {
   validation {
     condition = alltrue([
       for rt_key, rt in var.route_tables : alltrue([
-        for route_key, route in rt.routes : 
+        for route_key, route in rt.routes :
         route.destinations_type != "CIDR" || alltrue([
           for dest in route.destinations : can(cidrhost(dest, 0))
         ])
