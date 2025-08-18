@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.3.0...v5.3.1) (2025-08-18)
+
+
+### Bug Fixes
+
+* standardize optional variables and add validation rules ([#130](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/130)) ([dc883d3](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/dc883d34f73f100702f68391ad59744a59196bbd))
+
 ## [5.3.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.2.1...v5.3.0) (2025-07-23)
 
 
