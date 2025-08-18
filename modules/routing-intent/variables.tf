@@ -1,7 +1,7 @@
 variable "configs" {
   description = "Contains all routing intent configurations."
   type = map(object({
-    name           = optional(string, null)
+    name           = optional(string)
     virtual_hub_id = string
     routing_policies = map(object({
       name         = optional(string)
@@ -31,5 +31,25 @@ variable "configs" {
       ])
     ])
     error_message = "Each routing policy must have at least one destination."
+  }
+
+  validation {
+    condition = alltrue([
+      for config_key, config in var.configs : alltrue([
+        for policy_key, policy in config.routing_policies : alltrue([
+          for dest in policy.destinations : contains(["Internet", "PrivateTraffic"], dest)
+        ])
+      ])
+    ])
+    error_message = "Destinations must be 'Internet' or 'PrivateTraffic'."
+  }
+
+  validation {
+    condition = alltrue([
+      for config_key, config in var.configs : alltrue([
+        for policy_key, policy in config.routing_policies : can(regex("^/subscriptions/[^/]+/resourceGroups/[^/]+/providers/Microsoft\\.", policy.next_hop))
+      ])
+    ])
+    error_message = "All next_hop values must be valid Azure resource IDs."
   }
 }

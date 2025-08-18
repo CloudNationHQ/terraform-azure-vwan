@@ -58,7 +58,7 @@ Description: Used for naming purposes
 
 Type: `map(string)`
 
-Default: `null`
+Default: `{}`
 
 ## Outputs
 

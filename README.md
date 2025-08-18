@@ -71,8 +71,8 @@ Type:
 ```hcl
 object({
     name                              = string
-    resource_group_name               = optional(string, null)
-    location                          = optional(string, null)
+    resource_group_name               = optional(string)
+    location                          = optional(string)
     allow_branch_to_branch_traffic    = optional(bool, true)
     disable_vpn_encryption            = optional(bool, false)
     type                              = optional(string, "Standard")
@@ -80,8 +80,8 @@ object({
     tags                              = optional(map(string))
     vhubs = optional(map(object({
       name                                   = optional(string)
-      resource_group_name                    = optional(string, null)
-      location                               = optional(string, null)
+      resource_group_name                    = optional(string)
+      location                               = optional(string)
       address_prefix                         = string
       sku                                    = optional(string, "Standard")
       hub_routing_preference                 = optional(string, "ExpressRoute")
@@ -92,6 +92,7 @@ object({
         next_hop_ip_address = string
       })), {})
       point_to_site_vpn = optional(object({
+        name                                = optional(string)
         vpn_server_configuration_name       = optional(string)
         authentication_types                = optional(list(string), ["Certificate"])
         protocols                           = optional(list(string), ["IkeV2"])
@@ -153,8 +154,8 @@ object({
       }))
       site_to_site_vpn = optional(object({
         name                                  = string
-        resource_group_name                   = optional(string, null)
-        routing_preference                    = optional(string, null)
+        resource_group_name                   = optional(string)
+        routing_preference                    = optional(string)
         bgp_route_translation_for_nat_enabled = optional(bool, false)
         scale_unit                            = optional(number, 1)
         tags                                  = optional(map(string))
@@ -170,7 +171,7 @@ object({
         }))
         vpn_sites = optional(map(object({
           name                = optional(string)
-          resource_group_name = optional(string, null)
+          resource_group_name = optional(string)
           address_cidrs       = optional(list(string), [])
           device_vendor       = optional(string, "Microsoft")
           device_model        = optional(string)
@@ -183,10 +184,10 @@ object({
           }))
           vpn_links = optional(map(object({
             name          = optional(string)
-            ip_address    = optional(string, null)
-            provider_name = optional(string, null)
-            speed_in_mbps = optional(number, null)
-            fqdn          = optional(string, null)
+            ip_address    = optional(string)
+            provider_name = optional(string)
+            speed_in_mbps = optional(number)
+            fqdn          = optional(string)
             bgp = optional(object({
               peering_address = string
               asn             = number
@@ -210,7 +211,7 @@ object({
             })), {})
             vpn_links = map(object({
               name                                  = optional(string)
-              shared_key                            = optional(string, null)
+              shared_key                            = optional(string)
               bgp_enabled                           = optional(bool, false)
               protocol                              = optional(string, "IKEv2")
               ingress_nat_rule_ids                  = optional(list(string), [])
@@ -241,22 +242,22 @@ object({
         })), {})
         nat_rules = optional(map(object({
           name                = optional(string)
-          ip_configuration_id = optional(string, null)
+          ip_configuration_id = optional(string)
           mode                = optional(string, "EgressSnat")
           type                = optional(string, "Static")
           external_mappings = map(object({
             address_space = string
-            port_range    = optional(string, null)
+            port_range    = optional(string)
           }))
           internal_mappings = map(object({
             address_space = string
-            port_range    = optional(string, null)
+            port_range    = optional(string)
           }))
         })), {})
-      }), null)
+      }))
       express_route_gateway = optional(object({
         name                          = optional(string)
-        resource_group_name           = optional(string, null)
+        resource_group_name           = optional(string)
         scale_units                   = number
         allow_non_virtual_wan_traffic = optional(bool, false)
         tags                          = optional(map(string))
@@ -287,7 +288,7 @@ Description: contains naming convention
 
 Type: `map(string)`
 
-Default: `null`
+Default: `{}`
 
 ### <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name)
 
