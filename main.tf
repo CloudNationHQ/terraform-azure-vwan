@@ -53,6 +53,7 @@ resource "azurerm_virtual_hub" "vhub" {
   virtual_wan_id                         = azurerm_virtual_wan.vwan.id
   sku                                    = each.value.sku
   hub_routing_preference                 = each.value.hub_routing_preference
+  branch_to_branch_traffic_enabled       = each.value.branch_to_branch_traffic_enabled
   virtual_router_auto_scale_min_capacity = each.value.virtual_router_auto_scale_min_capacity
 
   tags = coalesce(
@@ -439,6 +440,7 @@ resource "azurerm_vpn_gateway_connection" "vpn_connection" {
       ])
 
       bgp_enabled                           = vpn_link.value.bgp_enabled
+      dpd_timeout_seconds                   = vpn_link.value.dpd_timeout_seconds
       protocol                              = vpn_link.value.protocol
       shared_key                            = vpn_link.value.shared_key
       ingress_nat_rule_ids                  = vpn_link.value.ingress_nat_rule_ids
