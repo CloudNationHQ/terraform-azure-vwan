@@ -16,6 +16,7 @@ variable "vwan" {
       address_prefix                         = string
       sku                                    = optional(string, "Standard")
       hub_routing_preference                 = optional(string, "ExpressRoute")
+      branch_to_branch_traffic_enabled       = optional(bool, false)
       virtual_router_auto_scale_min_capacity = optional(number, 2)
       tags                                   = optional(map(string))
       routes = optional(map(object({
@@ -144,6 +145,7 @@ variable "vwan" {
               name                                  = optional(string)
               shared_key                            = optional(string)
               bgp_enabled                           = optional(bool, false)
+              dpd_timeout_seconds                   = optional(number)
               protocol                              = optional(string, "IKEv2")
               ingress_nat_rule_ids                  = optional(list(string), [])
               egress_nat_rule_ids                   = optional(list(string), [])
