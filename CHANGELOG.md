@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.4.0...v5.4.1) (2025-09-08)
+
+
+### Bug Fixes
+
+* fix case sensitive issue in routing intent validation ([#136](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/136)) ([980489c](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/980489cea132d79a4920eb2d901f16498723b3fe))
+
 ## [5.4.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.3.1...v5.4.0) (2025-09-03)
 
 
