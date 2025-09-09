@@ -2,7 +2,7 @@ module terraform-azure-vwan
 
 go 1.24.6
 
-require github.com/cloudnationhq/az-cn-go-validor v1.7.0
+require github.com/cloudnationhq/az-cn-go-validor v1.8.0
 
 require (
 	github.com/agext/levenshtein v1.2.3 // indirect
