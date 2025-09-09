@@ -1,4 +1,4 @@
-.PHONY: all install-tools validate fmt docs test test-parallel test-sequential
+.PHONY: all install-tools validate fmt docs test test-parallel test-sequential test-local
 
 all: install-tools validate fmt docs
 
@@ -7,13 +7,20 @@ install-tools:
 
 TEST_ARGS := $(if $(skip-destroy),-skip-destroy=$(skip-destroy)) \
              $(if $(exception),-exception=$(exception)) \
-             $(if $(example),-example=$(example))
+             $(if $(example),-example=$(example)) \
+             $(if $(local),-local=$(local))
 
 test:
-	cd tests && go test -v -timeout 300m -run '^TestApplyNoError$$' -args $(TEST_ARGS) .
+	cd tests && go test -v -timeout 60m -run '^TestApplyNoError$$' -args $(TEST_ARGS) .
+
+test-sequential:
+	cd tests && go test -v -timeout 60m -run '^TestApplyAllSequential$$' -args $(TEST_ARGS) .
 
 test-parallel:
-	cd tests && go test -v -timeout 300m -run '^TestApplyAllParallel$$' -args $(TEST_ARGS) .
+	cd tests && go test -v -timeout 60m -run '^TestApplyAllParallel$$' -args $(TEST_ARGS) .
+
+test-local:
+	cd tests && go test -v -timeout 60m -run '^TestApplyAllLocal$$' -args $(TEST_ARGS) .
 
 docs:
 	@echo "Generating documentation for root and modules..."
