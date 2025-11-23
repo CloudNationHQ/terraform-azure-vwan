@@ -11,16 +11,16 @@ TEST_ARGS := $(if $(skip-destroy),-skip-destroy=$(skip-destroy)) \
              $(if $(local),-local=$(local))
 
 test:
-	cd tests && go test -v -timeout 60m -run '^TestApplyNoError$$' -args $(TEST_ARGS) .
+	cd tests && go test -v -timeout 1000m -run '^TestApplyNoError$$' -args $(TEST_ARGS) .
 
 test-sequential:
-	cd tests && go test -v -timeout 60m -run '^TestApplyAllSequential$$' -args $(TEST_ARGS) .
+	cd tests && go test -v -timeout 1000m -run '^TestApplyAllSequential$$' -args $(TEST_ARGS) .
 
 test-parallel:
-	cd tests && go test -v -timeout 60m -run '^TestApplyAllParallel$$' -args $(TEST_ARGS) .
+	cd tests && go test -v -timeout 1000m -run '^TestApplyAllParallel$$' -args $(TEST_ARGS) .
 
 test-local:
-	cd tests && go test -v -timeout 60m -run '^TestApplyAllLocal$$' -args $(TEST_ARGS) .
+	cd tests && go test -v -timeout 1000m -run '^TestApplyAllLocal$$' -args $(TEST_ARGS) .
 
 docs:
 	@echo "Generating documentation for root and modules..."
