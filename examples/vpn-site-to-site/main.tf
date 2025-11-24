@@ -59,7 +59,7 @@ module "firewall" {
 
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 5.0"
+  version = "~> 6.0"
 
   naming              = local.naming
   location            = module.rg.groups.demo.location

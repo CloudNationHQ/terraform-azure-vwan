@@ -4,6 +4,7 @@ variable "vwan" {
     name                              = string
     resource_group_name               = optional(string)
     location                          = optional(string)
+    use_existing_vwan                 = optional(bool, false)
     allow_branch_to_branch_traffic    = optional(bool, true)
     disable_vpn_encryption            = optional(bool, false)
     type                              = optional(string, "Standard")

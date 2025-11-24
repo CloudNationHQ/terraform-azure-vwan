@@ -1,25 +1,38 @@
+# existing virtual wan
+data "azurerm_virtual_wan" "existing_vwan" {
+  for_each = var.vwan.use_existing_vwan ? { "vwan" = var.vwan } : {}
+
+  name = each.value.name
+
+  resource_group_name = coalesce(
+    lookup(each.value, "resource_group_name", null),
+    var.resource_group_name
+  )
+}
+
 # virtual wan
 resource "azurerm_virtual_wan" "vwan" {
+  for_each = !var.vwan.use_existing_vwan ? { "vwan" = var.vwan } : {}
 
   resource_group_name = coalesce(
     lookup(
-      var.vwan, "resource_group_name", null
+      each.value, "resource_group_name", null
     ), var.resource_group_name
   )
 
   location = coalesce(
-    lookup(var.vwan, "location", null
+    lookup(each.value, "location", null
     ), var.location
   )
 
-  name                              = var.vwan.name
-  allow_branch_to_branch_traffic    = var.vwan.allow_branch_to_branch_traffic
-  disable_vpn_encryption            = var.vwan.disable_vpn_encryption
-  type                              = var.vwan.type
-  office365_local_breakout_category = var.vwan.office365_local_breakout_category
+  name                              = each.value.name
+  allow_branch_to_branch_traffic    = each.value.allow_branch_to_branch_traffic
+  disable_vpn_encryption            = each.value.disable_vpn_encryption
+  type                              = each.value.type
+  office365_local_breakout_category = each.value.office365_local_breakout_category
 
   tags = coalesce(
-    var.vwan.tags, var.tags
+    each.value.tags, var.tags
   )
 }
 
@@ -50,7 +63,7 @@ resource "azurerm_virtual_hub" "vhub" {
   )
 
   address_prefix                         = each.value.address_prefix
-  virtual_wan_id                         = azurerm_virtual_wan.vwan.id
+  virtual_wan_id                         = var.vwan.use_existing_vwan ? data.azurerm_virtual_wan.existing_vwan["vwan"].id : azurerm_virtual_wan.vwan["vwan"].id
   sku                                    = each.value.sku
   hub_routing_preference                 = each.value.hub_routing_preference
   branch_to_branch_traffic_enabled       = each.value.branch_to_branch_traffic_enabled
@@ -348,7 +361,7 @@ resource "azurerm_vpn_site" "vpn_site" {
     ), each.key
   )
 
-  virtual_wan_id = azurerm_virtual_wan.vwan.id
+  virtual_wan_id = var.vwan.use_existing_vwan ? data.azurerm_virtual_wan.existing_vwan["vwan"].id : azurerm_virtual_wan.vwan["vwan"].id
   address_cidrs  = each.value.address_cidrs
   device_vendor  = each.value.device_vendor
   device_model   = each.value.device_model

@@ -56,7 +56,7 @@ module "rg_vwan" {
 
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 5.0"
+  version = "~> 6.0"
 
   providers = {
     azurerm = azurerm.connectivity
@@ -83,7 +83,7 @@ module "vwan" {
 
 module "vhub-connection" {
   source  = "cloudnationhq/vwan/azure//modules/vhub-connection"
-  version = "~> 5.0"
+  version = "~> 6.0"
 
   providers = {
     azurerm = azurerm.connectivity

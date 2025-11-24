@@ -28,6 +28,8 @@ Custom virtual hub route tables with flexible routing configurations
 
 Offers three-tier naming hierarchy (explicit, convention-based, or key-based) for flexible resource management.
 
+Offers support for an existing virtual wan deployment.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -57,6 +59,7 @@ The following resources are used by this module:
 - [azurerm_vpn_gateway_nat_rule.nat_rule](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_gateway_nat_rule) (resource)
 - [azurerm_vpn_server_configuration.p2s_config](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_server_configuration) (resource)
 - [azurerm_vpn_site.vpn_site](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/vpn_site) (resource)
+- [azurerm_virtual_wan.existing_vwan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_wan) (data source)
 
 ## Required Inputs
 
@@ -73,6 +76,7 @@ object({
     name                              = string
     resource_group_name               = optional(string)
     location                          = optional(string)
+    use_existing_vwan                 = optional(bool, false)
     allow_branch_to_branch_traffic    = optional(bool, true)
     disable_vpn_encryption            = optional(bool, false)
     type                              = optional(string, "Standard")
@@ -85,6 +89,7 @@ object({
       address_prefix                         = string
       sku                                    = optional(string, "Standard")
       hub_routing_preference                 = optional(string, "ExpressRoute")
+      branch_to_branch_traffic_enabled       = optional(bool, false)
       virtual_router_auto_scale_min_capacity = optional(number, 2)
       tags                                   = optional(map(string))
       routes = optional(map(object({
@@ -213,6 +218,7 @@ object({
               name                                  = optional(string)
               shared_key                            = optional(string)
               bgp_enabled                           = optional(bool, false)
+              dpd_timeout_seconds                   = optional(number)
               protocol                              = optional(string, "IKEv2")
               ingress_nat_rule_ids                  = optional(list(string), [])
               egress_nat_rule_ids                   = optional(list(string), [])
