@@ -1,5 +1,18 @@
 # Changelog
 
+## [6.0.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.4.1...v6.0.0) (2025-11-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* Virtual WAN resource address changed from azurerm_virtual_wan.vwan to azurerm_virtual_wan.vwan[vwan]
+
+### Features
+
+* add support for existing virtual wan resource ([#145](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/145)) ([2ba4a5b](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/2ba4a5b29839f3d5d8feae2841c1653586f5d138))
+* **deps:** bump golang.org/x/crypto from 0.36.0 to 0.45.0 in /tests ([#143](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/143)) ([99a6105](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/99a61050495f10a8af52088c398da56f412bc827))
+* **deps:** bump golang.org/x/crypto from 0.41.0 to 0.45.0 in /tests ([#147](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/147)) ([103427f](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/103427f56b35e2bfb7bf6727ea662e97f2ed7ab0))
+
 ## [5.4.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.4.0...v5.4.1) (2025-09-08)
 
 
