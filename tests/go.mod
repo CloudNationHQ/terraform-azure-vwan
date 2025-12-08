@@ -2,7 +2,7 @@ module terraform-azure-vwan
 
 go 1.24.6
 
-require github.com/cloudnationhq/az-cn-go-validor v1.14.0
+require github.com/cloudnationhq/az-cn-go-validor v1.16.0
 
 require (
 	github.com/agext/levenshtein v1.2.3 // indirect
@@ -11,7 +11,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
-	github.com/gruntwork-io/terratest v0.52.0 // indirect
+	github.com/gruntwork-io/terratest v0.54.0 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-getter/v2 v2.2.3 // indirect
