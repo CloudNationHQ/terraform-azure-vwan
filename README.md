@@ -316,9 +316,41 @@ Default: `{}`
 
 The following outputs are exported:
 
+### <a name="output_express_route_gateways"></a> [express\_route\_gateways](#output\_express\_route\_gateways)
+
+Description: contains express route gateway configuration
+
+### <a name="output_point_to_site_vpn_gateways"></a> [point\_to\_site\_vpn\_gateways](#output\_point\_to\_site\_vpn\_gateways)
+
+Description: contains point to site vpn gateway configuration
+
+### <a name="output_security_partner_providers"></a> [security\_partner\_providers](#output\_security\_partner\_providers)
+
+Description: contains security partner provider configuration
+
 ### <a name="output_vhubs"></a> [vhubs](#output\_vhubs)
 
 Description: contains virtual hub configuration
+
+### <a name="output_vpn_gateway_connections"></a> [vpn\_gateway\_connections](#output\_vpn\_gateway\_connections)
+
+Description: contains vpn gateway connection configuration
+
+### <a name="output_vpn_gateway_nat_rules"></a> [vpn\_gateway\_nat\_rules](#output\_vpn\_gateway\_nat\_rules)
+
+Description: contains vpn gateway nat rule configuration
+
+### <a name="output_vpn_gateways"></a> [vpn\_gateways](#output\_vpn\_gateways)
+
+Description: contains vpn gateway configuration
+
+### <a name="output_vpn_server_configurations"></a> [vpn\_server\_configurations](#output\_vpn\_server\_configurations)
+
+Description: contains vpn server configuration
+
+### <a name="output_vpn_sites"></a> [vpn\_sites](#output\_vpn\_sites)
+
+Description: contains vpn site configuration
 
 ### <a name="output_vwan"></a> [vwan](#output\_vwan)
 
