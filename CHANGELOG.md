@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.1.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v6.0.0...v6.1.0) (2026-04-03)
+
+
+### Features
+
+* add missing outputs ([#152](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/152)) ([bd178da](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/bd178da46087f9fea9f315e561772c3e98eb3c44))
+
 ## [6.0.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v5.4.1...v6.0.0) (2025-11-24)
 
 
