@@ -528,6 +528,10 @@ resource "azurerm_vpn_gateway_connection" "vpn_connection" {
       remote_address_ranges = traffic_selector_policy.value.remote_address_ranges
     }
   }
+
+  lifecycle {
+    ignore_changes = [vpn_link]
+  }
 }
 
 # vpn gateway nat rules

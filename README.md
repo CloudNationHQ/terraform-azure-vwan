@@ -391,4 +391,4 @@ MIT Licensed. See [LICENSE](./LICENSE) for full details.
 
 - [Documentation](https://learn.microsoft.com/en-us/azure/virtual-wan/)
 - [Rest Api](https://learn.microsoft.com/en-us/rest/api/virtualwan/)
-- [Rest Api Specs](https://github.com/Azure/azure-rest-api-specs/blob/main/specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/virtualWan.json)
+- [Rest Api Specs](https://raw.githubusercontent.com/Azure/azure-rest-api-specs/4578e174ea9f9152823b2de1e16e096162263c55/specification/network/resource-manager/Microsoft.Network/Network/stable/2025-05-01/virtualWan.json)
