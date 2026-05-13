@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.2.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v6.1.0...v6.2.0) (2026-05-13)
+
+
+### Features
+
+* **deps:** bump github.com/cloudnationhq/az-cn-go-validor in /tests ([#158](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/158)) ([9376d64](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/9376d6434a48df9ade6dd10acebe19d76d6ef050))
+* ignore changes on the vpn_link ([#157](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/157)) ([84b24e0](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/84b24e050e5d52f4f03fe5b3ce888fb17be4c7c0))
+
 ## [6.1.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v6.0.0...v6.1.0) (2026-04-03)
 
 
