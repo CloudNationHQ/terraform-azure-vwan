@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.2.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v6.2.0...v6.2.1) (2026-06-03)
+
+
+### Bug Fixes
+
+* validation rule update allowing bgp asn 65515 ([#159](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/159)) ([f222eb4](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/f222eb4f19453451039889322d2d754b12e5547b))
+
 ## [6.2.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v6.1.0...v6.2.0) (2026-05-13)
 
 
