@@ -40,7 +40,8 @@ module "kv" {
 }
 
 module "vwan" {
-  source = "../../"
+  source  = "cloudnationhq/vwan/azure"
+  version = "~> 6.0"
 
   naming              = local.naming
   location            = module.rg.groups.demo.location
