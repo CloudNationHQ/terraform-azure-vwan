@@ -299,9 +299,9 @@ variable "vwan" {
     condition = alltrue([
       for hub_key, hub in var.vwan.vhubs :
       hub.site_to_site_vpn == null || hub.site_to_site_vpn.bgp_settings == null ||
-      (hub.site_to_site_vpn.bgp_settings.asn >= 1 && hub.site_to_site_vpn.bgp_settings.asn <= 4294967295 && hub.site_to_site_vpn.bgp_settings.asn != 65515)
+      (hub.site_to_site_vpn.bgp_settings.asn >= 1 && hub.site_to_site_vpn.bgp_settings.asn <= 4294967295)
     ])
-    error_message = "BGP ASN must be between 1 and 4294967295, and cannot be 65515 (reserved by Azure)."
+    error_message = "BGP ASN must be between 1 and 4294967295."
   }
 
   validation {
