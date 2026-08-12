@@ -43,7 +43,7 @@ The following requirements are needed by this module:
 
 The following providers are used by this module:
 
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 4.0)
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (4.81.0)
 
 ## Resources
 
@@ -87,7 +87,7 @@ object({
       resource_group_name                    = optional(string)
       location                               = optional(string)
       address_prefix                         = string
-      sku                                    = optional(string, "Standard")
+      sku                                    = optional(string)
       hub_routing_preference                 = optional(string, "ExpressRoute")
       branch_to_branch_traffic_enabled       = optional(bool, false)
       virtual_router_auto_scale_min_capacity = optional(number, 2)

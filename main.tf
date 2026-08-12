@@ -64,7 +64,7 @@ resource "azurerm_virtual_hub" "vhub" {
 
   address_prefix                         = each.value.address_prefix
   virtual_wan_id                         = var.vwan.use_existing_vwan ? data.azurerm_virtual_wan.existing_vwan["vwan"].id : azurerm_virtual_wan.vwan["vwan"].id
-  sku                                    = each.value.sku
+  sku                                    = coalesce(each.value.sku, "Standard")
   hub_routing_preference                 = each.value.hub_routing_preference
   branch_to_branch_traffic_enabled       = each.value.branch_to_branch_traffic_enabled
   virtual_router_auto_scale_min_capacity = each.value.virtual_router_auto_scale_min_capacity

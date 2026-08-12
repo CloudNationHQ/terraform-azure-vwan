@@ -15,7 +15,7 @@ variable "vwan" {
       resource_group_name                    = optional(string)
       location                               = optional(string)
       address_prefix                         = string
-      sku                                    = optional(string, "Standard")
+      sku                                    = optional(string)
       hub_routing_preference                 = optional(string, "ExpressRoute")
       branch_to_branch_traffic_enabled       = optional(bool, false)
       virtual_router_auto_scale_min_capacity = optional(number, 2)
@@ -221,13 +221,6 @@ variable "vwan" {
   validation {
     condition     = var.vwan.office365_local_breakout_category == null || contains(["None", "Optimize", "OptimizeAndAllow", "All"], var.vwan.office365_local_breakout_category)
     error_message = "Office365 local breakout category must be one of: 'None', 'Optimize', 'OptimizeAndAllow', 'All'."
-  }
-
-  validation {
-    condition = alltrue([
-      for hub_key, hub in var.vwan.vhubs : hub.sku == null || contains(["Basic", "Standard"], hub.sku)
-    ])
-    error_message = "Virtual Hub SKU must be either 'Basic' or 'Standard'."
   }
 
   validation {
