@@ -1,5 +1,17 @@
 # Changelog
 
+## [6.3.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v6.2.1...v6.3.0) (2026-08-18)
+
+
+### Features
+
+* **deps:** bump golang.org/x/crypto from 0.45.0 to 0.52.0 in /tests ([#161](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/161)) ([c2eb020](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/c2eb020df7d1bef8e15498b7bf158eb45a9c273f))
+
+
+### Bug Fixes
+
+* allow sku is empty for older hubs, make it truly optional ([#164](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/164)) ([b847c3d](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/b847c3d79a3abba9a67c7b5861595abd386bbbe8))
+
 ## [6.2.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v6.2.0...v6.2.1) (2026-06-03)
 
 
