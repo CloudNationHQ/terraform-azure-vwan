@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.3.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v6.3.0...v6.3.1) (2026-08-19)
+
+
+### Bug Fixes
+
+* allow custom location on azurerm_vpn_server_configuration ([#165](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/165)) ([1791f23](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/1791f239e0d842aefb87b5e3d85b68157f0caec0))
+
 ## [6.3.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v6.2.1...v6.3.0) (2026-08-18)
 
 
