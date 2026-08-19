@@ -99,10 +99,11 @@ resource "azurerm_vpn_server_configuration" "p2s_config" {
     ), var.resource_group_name
   )
 
-  location = coalesce(
-    lookup(
-      each.value, "location", null
-    ), var.location
+  location = coalesce(each.value.point_to_site_vpn.location,
+    coalesce(
+      lookup(
+        each.value, "location", null
+    ), var.location)
   )
 
   name = coalesce(

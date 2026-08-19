@@ -99,6 +99,7 @@ object({
       point_to_site_vpn = optional(object({
         name                                = optional(string)
         vpn_server_configuration_name       = optional(string)
+        location                            = optional(string)
         authentication_types                = optional(list(string), ["Certificate"])
         protocols                           = optional(list(string), ["IkeV2"])
         scale_unit                          = optional(number, 1)
