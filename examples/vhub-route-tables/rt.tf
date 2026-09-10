@@ -9,7 +9,7 @@ locals {
           destinations_type = "CIDR"
           destinations      = ["0.0.0.0/0"]
           next_hop_type     = "ResourceId"
-          next_hop          = module.firewall["weu"].instance.id
+          next_hop          = module.firewall["weu"].firewall.id
         }
       }
     }
@@ -23,7 +23,7 @@ locals {
           destinations_type = "CIDR"
           destinations      = ["0.0.0.0/0"]
           next_hop_type     = "ResourceId"
-          next_hop          = module.firewall["eus"].instance.id
+          next_hop          = module.firewall["eus"].firewall.id
         }
       }
     }

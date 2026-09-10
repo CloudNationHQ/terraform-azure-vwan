@@ -1,11 +1,9 @@
 # virtual hub route tables
-resource "azurerm_virtual_hub_route_table" "rt" {
+resource "azurerm_virtual_hub_route_table" "this" {
   for_each = var.route_tables
 
   name = coalesce(
-    each.value.name, try(
-      join("-", [var.naming.route_table, each.key]), null
-    ), each.key
+    each.value.name, each.key
   )
 
   virtual_hub_id = each.value.virtual_hub_id
@@ -16,9 +14,7 @@ resource "azurerm_virtual_hub_route_table" "rt" {
 
     content {
       name = coalesce(
-        route.value.name, try(
-          join("-", [var.naming.route, each.key]), null
-        ), route.key
+        route.value.name, route.key
       )
 
       destinations_type = route.value.destinations_type

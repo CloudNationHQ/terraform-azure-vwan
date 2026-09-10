@@ -1,13 +1,13 @@
 module "naming" {
   source  = "cloudnationhq/naming/azure"
-  version = "~> 0.24"
+  version = "~> 0.32"
 
   suffix = ["demo", "dev"]
 }
 
 module "rg" {
   source  = "cloudnationhq/rg/azure"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
   groups = {
     demo = {
@@ -19,9 +19,7 @@ module "rg" {
 
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 6.0"
-
-  naming = local.naming
+  version = "~> 7.0"
 
   vwan = {
     name                           = module.naming.virtual_wan.name
@@ -35,7 +33,7 @@ module "vwan" {
 
 module "routing_intents" {
   source  = "cloudnationhq/vwan/azure//modules/routing-intent"
-  version = "~> 5.0"
+  version = "~> 7.0"
 
   configs = {
     weu = {
@@ -43,7 +41,7 @@ module "routing_intents" {
       routing_policies = {
         internet_policy = {
           destinations = ["Internet"]
-          next_hop     = module.firewall.weu.instance.id
+          next_hop     = module.firewall.weu.firewall.id
         }
       }
     }
@@ -52,7 +50,7 @@ module "routing_intents" {
       routing_policies = {
         internet_policy = {
           destinations = ["Internet"]
-          next_hop     = module.firewall.sea.instance.id
+          next_hop     = module.firewall.sea.firewall.id
         }
       }
     }
@@ -61,10 +59,10 @@ module "routing_intents" {
 
 module "firewall" {
   source  = "cloudnationhq/fw/azure"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   resource_group_name = module.rg.groups.demo.name
   for_each            = local.firewalls
 
-  instance = each.value
+  firewall = each.value
 }

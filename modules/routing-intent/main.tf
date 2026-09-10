@@ -1,5 +1,5 @@
 # routing intent
-resource "azurerm_virtual_hub_routing_intent" "routing_intent" {
+resource "azurerm_virtual_hub_routing_intent" "this" {
   for_each = var.configs
 
   name = coalesce(

@@ -9,19 +9,19 @@ The following requirements are needed by this module:
 
 - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.0)
 
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 4.0)
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 5.0)
 
 ## Providers
 
 The following providers are used by this module:
 
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 4.0)
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 5.0)
 
 ## Resources
 
 The following resources are used by this module:
 
-- [azurerm_virtual_hub_route_table.rt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_hub_route_table) (resource)
+- [azurerm_virtual_hub_route_table.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_hub_route_table) (resource)
 
 ## Required Inputs
 
@@ -50,15 +50,7 @@ map(object({
 
 ## Optional Inputs
 
-The following input variables are optional (have default values):
-
-### <a name="input_naming"></a> [naming](#input\_naming)
-
-Description: Used for naming purposes
-
-Type: `map(string)`
-
-Default: `{}`
+No optional inputs.
 
 ## Outputs
 
