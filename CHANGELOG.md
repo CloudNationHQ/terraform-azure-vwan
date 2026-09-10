@@ -1,5 +1,16 @@
 # Changelog
 
+## [7.0.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v6.3.1...v7.0.0) (2026-09-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* this change causes recreates
+
+### Features
+
+* azurerm provider 5 upgrade ([#167](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/167)) ([978ddc5](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/978ddc5559c66bed66a17418c514c937b692dce2))
+
 ## [6.3.1](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v6.3.0...v6.3.1) (2026-08-19)
 
 
