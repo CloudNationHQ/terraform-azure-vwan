@@ -25,19 +25,4 @@ variable "virtual_hub" {
       }))
     })), {})
   })
-
-  validation {
-    condition = alltrue([
-      for conn_key, conn in var.virtual_hub.connections : can(regex("^/subscriptions/[^/]+/resourceGroups/[^/]+/providers/Microsoft.Network/virtualNetworks/[^/]+$", conn.remote_virtual_network_id))
-    ])
-    error_message = "All remote_virtual_network_id values must be valid Azure Virtual Network resource IDs."
-  }
-
-  validation {
-    condition = alltrue([
-      for conn_key, conn in var.virtual_hub.connections :
-      try(conn.routing.associated_route_table_id, null) == null || can(regex("^/subscriptions/[^/]+/resourceGroups/[^/]+/providers/Microsoft.Network/virtualHubs/[^/]+/hubRouteTables/[^/]+$", conn.routing.associated_route_table_id))
-    ])
-    error_message = "All route table IDs must be valid Azure Virtual Hub Route Table resource IDs."
-  }
 }

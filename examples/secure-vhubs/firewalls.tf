@@ -5,7 +5,7 @@ locals {
       location           = "westeurope"
       sku_name           = "AZFW_Hub"
       sku_tier           = "Standard"
-      firewall_policy_id = module.fw_policy.config.id
+      firewall_policy_id = module.fw_policy.firewall_policy.id
       virtual_hub = {
         virtual_hub_id = module.vwan.vhubs.weu.id
       }
@@ -15,7 +15,7 @@ locals {
       location           = "eastus"
       sku_name           = "AZFW_Hub"
       sku_tier           = "Standard"
-      firewall_policy_id = module.fw_policy.config.id
+      firewall_policy_id = module.fw_policy.firewall_policy.id
       virtual_hub = {
         virtual_hub_id = module.vwan.vhubs.eus.id
       }

@@ -58,13 +58,17 @@ EOF
               score   = 5
             }
           ],
-          client_root_certificate = {
-            name       = "RADIUS-Client-Root"
-            thumbprint = "0987654321ABCDEF0987654321ABCDEF09876543"
-          },
-          server_root_certificate = {
-            name             = "RADIUS-Server-Root"
-            public_cert_data = "MIID4jCCAsqgAwIBAgIQByXhXOLV..."
+          client_root_certificates = {
+            client = {
+              name       = "RADIUS-Client-Root"
+              thumbprint = "0987654321ABCDEF0987654321ABCDEF09876543"
+            }
+          }
+          server_root_certificates = {
+            server = {
+              name             = "RADIUS-Server-Root"
+              public_cert_data = "MIID4jCCAsqgAwIBAgIQByXhXOLV..."
+            }
           }
         }
 

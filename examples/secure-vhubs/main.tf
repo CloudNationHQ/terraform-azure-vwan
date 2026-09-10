@@ -1,13 +1,13 @@
 module "naming" {
   source  = "cloudnationhq/naming/azure"
-  version = "~> 0.24"
+  version = "~> 0.32"
 
   suffix = ["demo", "dev"]
 }
 
 module "rg" {
   source  = "cloudnationhq/rg/azure"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
   groups = {
     demo = {
@@ -19,9 +19,8 @@ module "rg" {
 
 module "vwan" {
   source  = "cloudnationhq/vwan/azure"
-  version = "~> 6.0"
+  version = "~> 7.0"
 
-  naming              = local.naming
   location            = module.rg.groups.demo.location
   resource_group_name = module.rg.groups.demo.name
 
@@ -35,22 +34,22 @@ module "vwan" {
 
 module "firewall" {
   source  = "cloudnationhq/fw/azure"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   resource_group_name = module.rg.groups.demo.name
   for_each            = local.firewalls
 
-  instance = each.value
+  firewall = each.value
 }
 
 module "fw_policy" {
   source  = "cloudnationhq/fwp/azure"
-  version = "~> 4.0"
+  version = "~> 5.0"
 
   resource_group_name = module.rg.groups.demo.name
   location            = module.rg.groups.demo.location
 
-  config = {
+  firewall_policy = {
     name                     = module.naming.firewall_policy.name
     threat_intelligence_mode = "Alert"
   }
@@ -58,7 +57,7 @@ module "fw_policy" {
 
 module "collection_rule_groups" {
   source  = "cloudnationhq/fwp/azure//modules/collection-rule-groups"
-  version = "~> 4.0"
+  version = "~> 5.0"
 
   groups = local.collection_rule_groups
 }
@@ -67,7 +66,7 @@ locals {
   collection_rule_groups = {
     default = {
       priority           = 1000
-      firewall_policy_id = module.fw_policy.config.id
+      firewall_policy_id = module.fw_policy.firewall_policy.id
       network_rule_collections = {
         allow_internal = {
           name     = "allow-internal-traffic"
