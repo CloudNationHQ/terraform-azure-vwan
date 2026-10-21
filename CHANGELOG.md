@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.1.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v7.0.0...v7.1.0) (2026-10-21)
+
+
+### Features
+
+* **deps:** bump github.com/klauspost/compress in /tests ([#169](https://github.com/CloudNationHQ/terraform-azure-vwan/issues/169)) ([3818f75](https://github.com/CloudNationHQ/terraform-azure-vwan/commit/3818f758839ac313d224f08dfbd5612cea1f2f04))
+
 ## [7.0.0](https://github.com/CloudNationHQ/terraform-azure-vwan/compare/v6.3.1...v7.0.0) (2026-09-10)
 
 
